@@ -118,6 +118,8 @@ button.theme-toggle {
   padding: 6px 12px; text-transform: uppercase;
   box-shadow: 2px 2px 0px var(--ink);
   transition: transform 0.05s, box-shadow 0.05s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  line-height: 1;
 }
 button.theme-toggle:hover { background: var(--button-hover); color: #000; }
 button.theme-toggle:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--ink); }
@@ -428,7 +430,7 @@ footer {
   <div class="topbar">
     <span class="stamp">NYC / 2026 CONCERT TRACKER</span>
     <div class="controls">
-      <button type="button" class="theme-toggle" id="theme-btn">MODE: <span id="theme-name">LIGHT</span></button>
+      <button type="button" class="theme-toggle" id="theme-btn" aria-label="Switch to light mode">☾ DARK</button>
     </div>
   </div>
 
@@ -1040,7 +1042,14 @@ function calculateFullYearVibe(selectedSharedEvs, genres, isHeadTripSelected){
    ========================================================= */
 function renderTheme(){
   document.documentElement.setAttribute("data-theme", state.theme);
-  document.getElementById("theme-name").textContent = state.theme.toUpperCase();
+  var btn = document.getElementById("theme-btn");
+  if (state.theme === "dark") {
+    btn.textContent = "☾ DARK";
+    btn.setAttribute("aria-label", "Switch to light mode");
+  } else {
+    btn.textContent = "☀ LIGHT";
+    btn.setAttribute("aria-label", "Switch to dark mode");
+  }
 }
 
 function renderRestTab(){
