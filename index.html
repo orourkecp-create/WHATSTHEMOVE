@@ -577,6 +577,22 @@ footer {
 "use strict";
 
 /* =========================================================
+   1. FORCE SCROLL TO TOP ON PAGE LOAD / REFRESH
+   ========================================================= */
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
+/* =========================================================
+   MONTH NAMES DICTIONARY FOR DYNAMIC PACING TITLES
+   ========================================================= */
+var MONTH_NAMES = [
+  "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
+  "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
+];
+
+/* =========================================================
    5-LEVEL DECISION STATUS SYSTEM & WEIGHTING
    ========================================================= */
 var STATUS = {
@@ -702,7 +718,7 @@ var PAST_EVENTS = [
 /* =========================================================
    STATE ENGINE & STORAGE (CLEAN SINGLE CANONICAL STATE)
    ========================================================= */
-var STORAGE_KEY = "whats_the_move_2026_state_v8";
+var STORAGE_KEY = "whats_the_move_2026_state_v9";
 
 var state = {
   theme: "dark",
@@ -785,6 +801,27 @@ function getGroupedEventsMap(evList){
   });
 
   return map;
+}
+
+/* ---------------------------------------------------------
+   CHRONOLOGICAL SORTING HELPER
+   --------------------------------------------------------- */
+function sortNodesChronologically(nodes) {
+  return nodes.slice().sort(function(a, b) {
+    var am = a.m, ad = a.d;
+    var bm = b.m, bd = b.d;
+
+    // Both TBD -> keep order
+    if (am === null && bm === null) return 0;
+    // TBD goes last
+    if (am === null) return 1;
+    if (bm === null) return -1;
+
+    // Compare Month
+    if (am !== bm) return am - bm;
+    // Compare Day
+    return ad - bd;
+  });
 }
 
 function computePastTotals(){
@@ -1009,6 +1046,10 @@ function renderTheme(){
 function renderRestTab(){
   var evs = getAllEvents();
   var mapped = getGroupedEventsMap(evs);
+  
+  // Sort cards chronologically (Dated first, TBD last)
+  mapped = sortNodesChronologically(mapped);
+
   var html = "";
 
   mapped.forEach(function(node){
@@ -1130,7 +1171,7 @@ function renderRampaControls(){
 }
 
 /* =========================================================
-   PACING TIMELINE (MONTH BY MONTH UPGRADE)
+   PACING TIMELINE (DYNAMICALLY DERIVED MONTH SECTIONS)
    ========================================================= */
 function parseEventDateObj(e) {
   if (!e.m || !e.d) return null;
@@ -1153,7 +1194,7 @@ function renderMonthsTab(){
     }
   });
 
-  // Sort by date
+  // Sort chronologically (Dated first, TBD last)
   chronList.sort(function(a, b){
     if(!a.m) return 1;
     if(!b.m) return -1;
@@ -1161,25 +1202,29 @@ function renderMonthsTab(){
     return a.d - b.d;
   });
 
-  var months = [
-    { num: 9, name: "SEPTEMBER" },
-    { num: 10, name: "OCTOBER" },
-    { num: 11, name: "NOVEMBER" },
-    { num: 12, name: "DECEMBER" }
-  ];
+  // Dynamically extract unique month numbers present in chronList
+  var presentMonths = [];
+  chronList.forEach(function(e){
+    if(e.m && presentMonths.indexOf(e.m) === -1) {
+      presentMonths.push(e.m);
+    }
+  });
+  presentMonths.sort(function(a, b){ return a - b; });
 
   var html = "";
   var lastActiveDate = null;
 
-  months.forEach(function(mObj){
-    var monthEvs = chronList.filter(function(e){ return e.m === mObj.num; });
+  presentMonths.forEach(function(mNum){
+    var monthEvs = chronList.filter(function(e){ return e.m === mNum; });
 
     if(monthEvs.length === 0) return;
+
+    var monthName = MONTH_NAMES[mNum - 1] || ("MONTH " + mNum);
 
     html += `
       <div class="pacing-month-section">
         <div class="pacing-month-header">
-          <span>${mObj.name} 2026</span>
+          <span>${monthName} 2026</span>
           <span class="pacing-month-count">${monthEvs.length} Event(s)</span>
         </div>
         <div class="pacing-timeline">
@@ -1249,7 +1294,7 @@ function renderMonthsTab(){
     html += `
       <div class="pacing-month-section">
         <div class="pacing-month-header">
-          <span>UNANNOUNCED DATES</span>
+          <span>DATE UNANNOUNCED</span>
           <span class="pacing-month-count">${tbdEvs.length} Event(s)</span>
         </div>
         <div class="pacing-timeline">
