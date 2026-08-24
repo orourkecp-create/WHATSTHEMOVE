@@ -626,6 +626,92 @@ select.status-select.st-skip { background-color: var(--st-skip-bg); color: var(-
   text-transform: uppercase; text-align: center; padding: 10px;
   background: var(--bg-card); border: 2px dashed var(--ink); color: var(--ink);
 }
+
+/* ---------- CALENDAR VIEW ---------- */
+.calendar-shell {
+  background: var(--bg-card); border: 3px solid var(--ink); padding: 14px;
+  box-shadow: 6px 6px 0px var(--accent-main); margin-bottom: 20px;
+}
+.calendar-toolbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  margin-bottom: 12px; flex-wrap: wrap;
+}
+.calendar-month-title {
+  font-family: var(--font-display); font-size: clamp(20px, 5vw, 28px);
+  text-transform: uppercase; line-height: 1;
+}
+.calendar-month-controls { display: flex; gap: 6px; }
+.calendar-arrow {
+  appearance: none; cursor: pointer; background: var(--bg-subtle); color: var(--ink);
+  border: 2px solid var(--ink); font-family: var(--font-display); font-size: 13px;
+  padding: 6px 10px; box-shadow: 2px 2px 0 var(--ink);
+}
+.calendar-arrow:hover:not(:disabled) { background: var(--button-hover); color: #000; }
+.calendar-arrow:disabled { opacity: .3; cursor: default; }
+.calendar-weekdays, .calendar-grid {
+  display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.calendar-weekdays {
+  border: 2px solid var(--ink); border-bottom: 0;
+  background: var(--ink); color: var(--bg);
+}
+.calendar-weekday {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  text-transform: uppercase; text-align: center; padding: 5px 2px;
+}
+.calendar-grid { border-left: 2px solid var(--ink); border-top: 2px solid var(--ink); }
+.calendar-day {
+  min-height: 86px; padding: 5px; background: var(--bg-card);
+  border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+  overflow: hidden;
+}
+.calendar-day.is-empty { background: var(--bg-subtle); opacity: .55; }
+.calendar-day.is-today { box-shadow: inset 0 0 0 3px var(--hot-pink); }
+.calendar-date-num {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  margin-bottom: 4px; display: inline-block;
+}
+.calendar-day.is-today .calendar-date-num {
+  background: var(--hot-pink); color: #fff; padding: 1px 4px;
+}
+.calendar-events { display: flex; flex-direction: column; gap: 3px; }
+.cal-event {
+  width: 100%; appearance: none; cursor: pointer; text-align: left;
+  border: 1.5px solid #111318; padding: 3px 4px; font-family: var(--font-mono);
+  font-size: 8.5px; line-height: 1.2; font-weight: 700; color: #000;
+  overflow: hidden; text-overflow: ellipsis; box-shadow: 1px 1px 0 #111318;
+}
+.cal-event:hover { transform: translate(-1px, -1px); box-shadow: 2px 2px 0 #111318; }
+.cal-event.st-locked { background: var(--st-locked-bg); color: var(--st-locked-text); }
+.cal-event.st-likely { background: var(--st-likely-bg); color: var(--st-likely-text); }
+.cal-event.st-choosing { background: var(--st-choosing-bg); color: var(--st-choosing-text); }
+.cal-event.st-gametime { background: var(--st-gametime-bg); color: var(--st-gametime-text); }
+.cal-event.st-skip { background: var(--st-skip-bg); color: var(--st-skip-text); opacity: .65; }
+.calendar-legend {
+  display: flex; flex-wrap: wrap; gap: 6px 10px; margin: 12px 0 0;
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700; text-transform: uppercase;
+}
+.calendar-legend-item { display: flex; align-items: center; gap: 4px; }
+.calendar-legend-swatch { width: 10px; height: 10px; border: 1px solid var(--ink); }
+.calendar-tbd {
+  margin-top: 14px; border-top: 2px dashed var(--ink); padding-top: 10px;
+}
+.calendar-tbd-title {
+  font-family: var(--font-display); font-size: 12px; text-transform: uppercase; margin-bottom: 6px;
+}
+.calendar-tbd-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.calendar-tbd .cal-event { width: auto; max-width: 100%; padding: 5px 7px; }
+.calendar-note {
+  font-family: var(--font-mono); font-size: 10px; color: var(--ink-muted); margin: 8px 0 0;
+}
+@media (max-width: 560px) {
+  .calendar-shell { padding: 8px; }
+  .calendar-day { min-height: 72px; padding: 3px; }
+  .calendar-date-num { font-size: 9px; }
+  .cal-event { font-size: 7.5px; padding: 2px 3px; }
+  .calendar-weekday { font-size: 8px; }
+}
+
 </style>
 </head>
 <body>
@@ -650,6 +736,7 @@ select.status-select.st-skip { background-color: var(--st-skip-bg); color: var(-
       <button class="tab" data-nav="rest" aria-selected="false">REST OF 2026</button>
       <button class="tab" data-nav="vibe" aria-selected="false">PICK YOUR VIBE</button>
       <button class="tab" data-nav="year" aria-selected="false">YEAR SO FAR</button>
+      <button class="tab" data-nav="calendar" aria-selected="false">CALENDAR</button>
     </div>
   </div>
 
@@ -803,7 +890,19 @@ select.status-select.st-skip { background-color: var(--st-skip-bg); color: var(-
     </div>
   </section>
 
-  <!-- TAB 2: PICK YOUR VIBE -->
+
+  <!-- TAB 2: CALENDAR -->
+  <section class="panel" id="panel-calendar">
+    <div class="calendar-toolbar">
+      <div>
+        <h2 class="section-title">MASTER CALENDAR</h2>
+        <p class="section-note" style="margin-bottom:0;">The rest of 2026 at a glance. Tap any show to jump to its decision card.</p>
+      </div>
+    </div>
+    <div id="calendarView"></div>
+  </section>
+
+  <!-- TAB 3: PICK YOUR VIBE -->
   <section class="panel" id="panel-vibe">
     <div class="vibe-top-bar">
       <div>
@@ -815,7 +914,7 @@ select.status-select.st-skip { background-color: var(--st-skip-bg); color: var(-
     <div class="vibe-routes-grid" id="vibeRoutesGrid"></div>
   </section>
 
-  <!-- TAB 3: YEAR SO FAR -->
+  <!-- TAB 4: YEAR SO FAR -->
   <section class="panel" id="panel-year">
     <h2 class="section-title">YEAR SO FAR</h2>
     <p class="section-note">Shows attended between Feb &amp; Aug 2026 recap.</p>
@@ -1888,7 +1987,7 @@ function renderGroupedEventCard(node){
   }
 
   return `
-    <div class="date-group-card ${isSkip ? 'skip-state' : ''} ${isHighlighted ? 'vibe-highlighted' : ''}">
+    <div class="date-group-card ${isSkip ? 'skip-state' : ''} ${isHighlighted ? 'vibe-highlighted' : ''}" data-groupid="${node.groupId}">
       <div class="date-group-header">
         <span class="date-group-label">${node.m}/${node.d} &bull; COMPETING CHOICE</span>
         <div style="display:flex; gap:4px; align-items:center;">
@@ -2622,9 +2721,137 @@ function renderDamageSection(){
   document.getElementById("finalEditorialLine").textContent = data.editorialLine;
 }
 
+
+/* =========================================================
+   MASTER CALENDAR VIEW
+   ========================================================= */
+var CALENDAR_MONTHS = [7, 8, 9, 10, 11]; // Aug-Dec, zero-indexed
+var calendarMonthIndex = Math.max(0, CALENDAR_MONTHS.indexOf(CURRENT_DATE.getMonth()));
+if(calendarMonthIndex === -1) calendarMonthIndex = 0;
+
+function escapeHtml(str) {
+  return String(str == null ? "" : str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function getCalendarEventsForDate(monthNum, dayNum) {
+  var evs = getAllEvents();
+  var out = [];
+  evs.forEach(function(e){
+    if(!e.m || !e.d) return;
+    var startM = e.m;
+    var startD = e.d;
+    var endD = e.dEnd || e.d;
+    if(startM === monthNum && dayNum >= startD && dayNum <= endD) {
+      out.push(e);
+    }
+  });
+  return out;
+}
+
+function renderCalendarEventChip(e, isContinuation) {
+  var st = state.status[e.id] || "choosing";
+  var label = (isContinuation ? "↳ " : "") + e.artist;
+  return `<button type="button" class="cal-event st-${st}" data-calendar-event-id="${escapeHtml(e.id)}" title="${escapeHtml(e.artist + ' · ' + e.venue + ' · ' + STATUS[st].label)}">${escapeHtml(label)}</button>`;
+}
+
+function renderCalendarTab() {
+  var container = document.getElementById("calendarView");
+  if(!container) return;
+
+  var month0 = CALENDAR_MONTHS[calendarMonthIndex];
+  var year = 2026;
+  var monthNum = month0 + 1;
+  var monthName = new Date(year, month0, 1).toLocaleString("en-US", { month: "long" });
+  var firstDow = new Date(year, month0, 1).getDay();
+  var daysInMonth = new Date(year, month0 + 1, 0).getDate();
+  var totalCells = Math.ceil((firstDow + daysInMonth) / 7) * 7;
+
+  var html = `<div class="calendar-shell">`;
+  html += `<div class="calendar-toolbar">
+    <div class="calendar-month-title">${monthName} ${year}</div>
+    <div class="calendar-month-controls">
+      <button type="button" class="calendar-arrow" data-calendar-dir="prev" ${calendarMonthIndex === 0 ? 'disabled' : ''}>← PREV</button>
+      <button type="button" class="calendar-arrow" data-calendar-dir="next" ${calendarMonthIndex === CALENDAR_MONTHS.length - 1 ? 'disabled' : ''}>NEXT →</button>
+    </div>
+  </div>`;
+
+  html += `<div class="calendar-weekdays">${["SUN","MON","TUE","WED","THU","FRI","SAT"].map(function(d){ return `<div class="calendar-weekday">${d}</div>`; }).join("")}</div>`;
+  html += `<div class="calendar-grid">`;
+
+  for(var cell = 0; cell < totalCells; cell++) {
+    var day = cell - firstDow + 1;
+    if(day < 1 || day > daysInMonth) {
+      html += `<div class="calendar-day is-empty"></div>`;
+      continue;
+    }
+
+    var isToday = CURRENT_DATE.getFullYear() === year && CURRENT_DATE.getMonth() === month0 && CURRENT_DATE.getDate() === day;
+    var dayEvents = getCalendarEventsForDate(monthNum, day);
+    html += `<div class="calendar-day ${isToday ? 'is-today' : ''}">`;
+    html += `<span class="calendar-date-num">${day}</span>`;
+    if(dayEvents.length) {
+      html += `<div class="calendar-events">`;
+      dayEvents.forEach(function(e){
+        html += renderCalendarEventChip(e, !!(e.dEnd && day > e.d));
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  }
+  html += `</div>`;
+
+  html += `<div class="calendar-legend">
+    <span class="calendar-legend-item"><span class="calendar-legend-swatch" style="background:var(--st-locked-bg)"></span>Locked</span>
+    <span class="calendar-legend-item"><span class="calendar-legend-swatch" style="background:var(--st-likely-bg)"></span>Likely</span>
+    <span class="calendar-legend-item"><span class="calendar-legend-swatch" style="background:var(--st-choosing-bg)"></span>Choosing</span>
+    <span class="calendar-legend-item"><span class="calendar-legend-swatch" style="background:var(--st-gametime-bg)"></span>Game Time</span>
+    <span class="calendar-legend-item"><span class="calendar-legend-swatch" style="background:var(--st-skip-bg)"></span>Skip</span>
+  </div>`;
+
+  var undated = getAllEvents().filter(function(e){ return !e.m || !e.d; });
+  if(undated.length) {
+    html += `<div class="calendar-tbd"><div class="calendar-tbd-title">DATE TBD / ON THE RADAR</div><div class="calendar-tbd-list">`;
+    undated.forEach(function(e){ html += renderCalendarEventChip(e, false); });
+    html += `</div></div>`;
+  }
+  html += `<p class="calendar-note">Status colors stay synced with REST OF 2026, including custom shows you add.</p>`;
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function jumpFromCalendarToEvent(eventId) {
+  var ev = getAllEvents().find(function(x){ return x.id === eventId; });
+  if(!ev) return;
+
+  if(ev.group) {
+    state.activeGroupTab[ev.group] = ev.id;
+    saveState();
+  }
+  renderRestTab();
+  switchSection("rest");
+
+  window.setTimeout(function(){
+    var target = document.querySelector(`[data-evcardid="${CSS.escape(eventId)}"]`);
+    if(!target && ev.group) {
+      target = document.querySelector(`.date-group-card[data-groupid="${CSS.escape(ev.group)}"]`);
+    }
+    if(target) {
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      target.classList.add("vibe-highlighted");
+      window.setTimeout(function(){ target.classList.remove("vibe-highlighted"); }, 1200);
+    }
+  }, 80);
+}
+
 function renderAll(){
   renderTheme();
   renderRestTab();
+  renderCalendarTab();
   renderPickYourVibeTab();
   renderYearSoFarTab();
 }
@@ -2826,6 +3053,22 @@ document.querySelectorAll("[data-nav]").forEach(function(btn){
 });
 
 document.addEventListener("click", function(ev){
+
+  var calDirBtn = ev.target.closest("[data-calendar-dir]");
+  if(calDirBtn && !calDirBtn.disabled) {
+    var dir = calDirBtn.dataset.calendarDir;
+    if(dir === "prev" && calendarMonthIndex > 0) calendarMonthIndex--;
+    if(dir === "next" && calendarMonthIndex < CALENDAR_MONTHS.length - 1) calendarMonthIndex++;
+    renderCalendarTab();
+    return;
+  }
+
+  var calEventBtn = ev.target.closest("[data-calendar-event-id]");
+  if(calEventBtn) {
+    jumpFromCalendarToEvent(calEventBtn.dataset.calendarEventId);
+    return;
+  }
+
   var vibeShowsLink = ev.target.closest("[data-vibeshows]");
   if(vibeShowsLink) {
     ev.preventDefault();
