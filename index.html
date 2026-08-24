@@ -1,39 +1,251 @@
+URGENT BUG FIX — GITHUB PAGES IS DISPLAYING RAW CSS AS VISIBLE PAGE CONTENT.
+
+The attached HTML works correctly when opened locally as a file:// HTML document.
+
+However, after uploading the same site to GitHub Pages, a large section of CSS is appearing as literal visible text at the top of the webpage.
+
+This is a DEPLOYMENT / HTML STRUCTURE debugging task.
+
+DO NOT redesign the site.
+DO NOT change the visual design.
+DO NOT simplify features.
+DO NOT remove functionality.
+DO NOT rewrite working JavaScript unnecessarily.
+DO NOT make new UX changes.
+
+The current site design and functionality should remain exactly as-is.
+
+============================================================
+THE PROBLEM
+============================================================
+
+On GitHub Pages, the webpage begins displaying CSS such as:
+
+margin-bottom: 10px;
+.date-group-label { ... }
+.segmented-tabs { ... }
+.status-select { ... }
+...
+
+as literal text in the browser.
+
+This means the browser is somehow interpreting part of the stylesheet as BODY CONTENT rather than CSS.
+
+The exact same HTML appears to work correctly when opened locally.
+
+I need you to determine WHY and repair the HTML so it works reliably both:
+
+1. locally via file://
+2. through GitHub Pages over HTTPS
+
+============================================================
+IMPORTANT: START FROM THE CURRENT HTML
+============================================================
+
+Use the COMPLETE HTML I provide as the source of truth.
+
+Do not rebuild the website from scratch.
+
+The current file intentionally contains:
+
+- one HTML document
+- one <head>
+- one <style> block
+- one <body>
+- the full concert tracker
+- light/dark mode
+- landing navigation
+- Rest of 2026
+- Pick Your Vibe
+- Year So Far
+- event statuses
+- same-date decision groups
+- custom Add Show functionality
+- localStorage
+- editing/deleting shows
+- venue metadata
+- Annual Vibe Verdict
+- What the Calendar Needs
+- Surprise Me
+- dynamic vibe routes
+- attendance handling
+- Mark Ronson 8/26
+- all current 2026 data
+
+PRESERVE ALL OF THIS.
+
+============================================================
+FIRST: AUDIT THE DOCUMENT STRUCTURE
+============================================================
+
+Before changing anything, inspect the ENTIRE HTML from top to bottom.
+
+Explicitly verify:
+
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
-<title>WHAT'S THE MOVE? · 2026 CONCERT TRACKER</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
 <style>
-/* =========================================================
-   90s RAVE / NYC NIGHTLIFE DESIGN SYSTEM
-   ========================================================= */
-:root {
-  color-scheme: light dark;
-  
-  /* Shared Base Hues */
-  --acid-green: #ccff00;
-  --fluro-yellow: #ffee00;
-  --electric-purple: #8b5cf6;
-  --hot-pink: #ff2a85;
-  --bright-cyan: #00f0ff;
-  --punchy-orange: #ff5500;
-  
-  /* Light Mode (Off-white handbill / 90s record flyer) */
-  --bg: #f4f1ea;
-  --bg-card: #ffffff;
-  --bg-subtle: #eae5d9;
-  --ink: #111318;
-  --ink-muted: #5a5f6b;
-  --border: #111318;
-  --border-subtle: #c8c2b4;
-  
-  --accent-main: var(--electric-purple);
-  --accent-pop: var(--hot-pink);
+...
+</style>
+
+</head>
+
+<body>
+...
+<script>
+...
+</script>
+</body>
+</html>
+
+There must be exactly:
+
+- ONE <!DOCTYPE html>
+- ONE opening <html>
+- ONE closing </html>
+- ONE opening <head>
+- ONE closing </head>
+- ONE opening <style>
+- ONE closing </style>
+- ONE opening <body>
+- ONE closing </body>
+- ONE primary script block unless additional scripts are genuinely required
+
+Search specifically for:
+
+<style
+</style>
+<head
+</head>
+<body
+</body>
+<script
+</script>
+
+Make sure none are accidentally duplicated, malformed, nested, escaped, commented out, or prematurely closed.
+
+============================================================
+PAY SPECIAL ATTENTION TO THE CSS BREAK POINT
+============================================================
+
+On the broken GitHub Pages version, the visible CSS appears around the stylesheet area containing things such as:
+
+SEGMENTED SAME-DATE TABS
+
+.date-group-card
+.date-group-header
+.date-group-label
+.segmented-tabs
+.seg-tab
+
+Custom Styled Select with 5 Status Colors
+
+select.status-select
+
+SPECIAL CARD INPUTS
+
+ADD A SHOW FORM & BUTTON
+
+OUTSIDE LANDS DUAL-COLUMN RECAP
+
+PICK YOUR VIBE STYLES
+
+ANNUAL VIBE VERDICT
+
+etc.
+
+Inspect the CSS immediately BEFORE this area extremely carefully.
+
+Look for:
+
+- accidental </style>
+- malformed HTML inside CSS
+- an unclosed CSS comment
+- malformed comment syntax
+- stray <
+- stray >
+- accidental HTML tags
+- malformed data URI
+- broken quotes
+- unescaped characters
+- invalid pasted markup
+- duplicated stylesheet fragments
+- invisible characters
+- encoding issues
+- a browser parser edge case
+
+Do not assume the first visible CSS line is where the bug originates.
+
+The actual parser failure may occur ABOVE it.
+
+============================================================
+CHECK THE SVG DATA URI
+============================================================
+
+Pay particular attention to the inline SVG used by:
+
+select.status-select
+
+The CSS currently uses an inline:
+
+background-image: url('data:image/svg+xml;utf8,...');
+
+Because this contains literal SVG markup with characters such as:
+
+<
+>
+"
+#
+'
+
+verify that this data URI is safely encoded for an HTML <style> block served through GitHub Pages.
+
+If necessary, percent-encode the SVG properly.
+
+For example, characters such as:
+
+< → %3C
+> → %3E
+# → %23
+
+should not be allowed to create HTML parsing ambiguity.
+
+If this is the source of the problem, FIX THE DATA URI rather than removing the custom dropdown arrow.
+
+============================================================
+CHECK CSS COMMENTS
+============================================================
+
+Audit every CSS comment.
+
+They must use valid syntax:
+
+/* comment */
+
+Make sure there is no accidental:
+
+<!--
+-->
+//
+/*
+without */
+
+or malformed divider that could cause the rest of the stylesheet to escape into the document.
+
+============================================================
+CHECK FOR ACCIDENTAL MARKDOWN
+============================================================
+
+This file has been generated and edited through AI tools.
+
+Make sure the HTML contains NO:
+
+```html
+
+```css
   --card-shadow: 4px 4px 0px #111318;
   --button-hover: var(--acid-green);
 
