@@ -690,11 +690,23 @@ var LEGACY_STATUS_MAP = {
 };
 
 var INITIAL_EVENTS = [
+  // Sept 4 Decision Group (CHOOSE 1)
   { 
-    id:"sep04", m:9, d:4, artist:"Justin Strauss, Dimi Angélis", venue:"Public Records", price:21, kind:"dj", local:true, def:"likely", 
-    ctx:"An easy post-dinner move: NYC legend meets proper techno without turning Friday into an all-night mission.",
+    id:"sep04a", m:9, d:4, artist:"Eli Escobar", venue:"House of Yes", price:0, kind:"dj", local:true, def:"choosing", group:"SEP04", 
+    ctx:"Free Eli at House of Yes — the easiest, lowest-stakes option if the night just needs a great Brooklyn dance floor.",
+    tags: ["club", "cheap", "dj"]
+  },
+  { 
+    id:"sep04b", m:9, d:4, artist:"MoBlack Records After Party", venue:"99 Scott", price:null, kind:"dj", local:true, def:"choosing", group:"SEP04", 
+    ctx:"Afro-house after-party at 99 Scott — the bigger late-night move if we want to turn Labor Day Friday into a proper club night.",
+    tags: ["club", "big-night", "dj"]
+  },
+  { 
+    id:"sep04c", m:9, d:4, artist:"Justin Strauss, Dimi Angélis, The AM/AMX", venue:"Public Records", price:21, kind:"dj", local:true, def:"likely", group:"SEP04", 
+    ctx:"NYC legend Justin Strauss plus Dimi Angélis and The AM/AMX at Public Records — an easy post-dinner move with a strong music-first lineup.",
     tags: ["club", "house", "dj"]
   },
+
   { 
     id:"sep10", m:9, d:10, artist:"Channel Tres", venue:"Knockdown Center", price:50, spentAlready:50, kind:"dj", local:true, def:"choosing", isChannelTres:true, 
     ctx:"Live funk, house and hip-hop swagger — plus friends are already going, which gives this one an easy social pull.",
@@ -810,7 +822,7 @@ var STORAGE_KEY = "whats_the_move_2026_state_v11";
 var state = {
   theme: "dark",
   status: {},
-  activeGroupTab: { "NOV6": "nov06a" },
+  activeGroupTab: { "SEP04": "sep04c", "NOV6": "nov06a" },
   channelTresSecond: { bought: false, price: null },
   rampaDate: "",
   customEvents: []
@@ -1210,7 +1222,10 @@ function renderGroupedEventCard(node){
       <div class="segmented-tabs" data-groupid="${node.groupId}">
         ${node.items.map(function(item){
           var isAct = (item.id === activeItem.id);
-          return `<button class="seg-tab ${isAct?'active':''}" data-tabitemid="${item.id}">${item.artist}</button>`;
+          var tabLabel = item.id.startsWith("sep04") ? 
+            (item.id === "sep04a" ? "ELI ESCOBAR" : (item.id === "sep04b" ? "MOBLACK RECORDS" : "JUSTIN STRAUSS + CO.")) : 
+            item.artist;
+          return `<button class="seg-tab ${isAct?'active':''}" data-tabitemid="${item.id}">${tabLabel}</button>`;
         }).join('')}
       </div>
 
@@ -1267,7 +1282,7 @@ function scoreEventForRoute(e, routeKey) {
 
   if (routeKey === "brooklyn_club_rat") {
     if (kind === "dj" || tags.indexOf("club") !== -1 || tags.indexOf("house") !== -1) baseScore += 30;
-    if (e.venue && (e.venue.toLowerCase().includes("public records") || e.venue.toLowerCase().includes("knockdown") || e.venue.toLowerCase().includes("boat") || e.venue.toLowerCase().includes("refuge") || e.venue.toLowerCase().includes("pacha"))) baseScore += 15;
+    if (e.venue && (e.venue.toLowerCase().includes("public records") || e.venue.toLowerCase().includes("knockdown") || e.venue.toLowerCase().includes("boat") || e.venue.toLowerCase().includes("refuge") || e.venue.toLowerCase().includes("pacha") || e.venue.toLowerCase().includes("99 scott") || e.venue.toLowerCase().includes("house of yes"))) baseScore += 15;
   } else if (routeKey === "bands") {
     if (kind === "band" || tags.indexOf("band") !== -1) baseScore += 40;
     if (e.venue && (e.venue.toLowerCase().includes("stadium") || e.venue.toLowerCase().includes("hall") || e.venue.toLowerCase().includes("wmsburg"))) baseScore += 15;
@@ -1283,7 +1298,7 @@ function scoreEventForRoute(e, routeKey) {
     if (priceNum >= 40 || tags.indexOf("big-night") !== -1 || kind === "fest") baseScore += 35;
     if (e.venue && (e.venue.toLowerCase().includes("stadium") || e.venue.toLowerCase().includes("hall") || e.venue.toLowerCase().includes("knockdown") || e.venue.toLowerCase().includes("indio"))) baseScore += 20;
   } else if (routeKey === "curated") {
-    if (tags.indexOf("curated") !== -1 || kind === "band" || e.id === "sep04" || e.id === "oct26") baseScore += 35;
+    if (tags.indexOf("curated") !== -1 || kind === "band" || e.id === "sep04c" || e.id === "oct26") baseScore += 35;
     if (st === "locked" || st === "likely") baseScore += 15;
   } else if (routeKey === "weird") {
     if (tags.indexOf("weird") !== -1 || e.venue.toLowerCase().includes("boat") || e.venue.toLowerCase().includes("gabriela") || e.venue.toLowerCase().includes("carnegie") || e.venue.toLowerCase().includes("99 scott")) baseScore += 40;
