@@ -1,0 +1,3261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>WHAT'S THE MOVE? · 2026 CONCERT TRACKER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   90s RAVE / NYC NIGHTLIFE DESIGN SYSTEM
+   ========================================================= */
+:root {
+  color-scheme: light dark;
+  
+  /* Shared Base Hues */
+  --acid-green: #ccff00;
+  --fluro-yellow: #ffee00;
+  --electric-purple: #8b5cf6;
+  --hot-pink: #ff2a85;
+  --bright-cyan: #00f0ff;
+  --punchy-orange: #ff5500;
+  
+  /* Light Mode (Off-white handbill / 90s record flyer) */
+  --bg: #f4f1ea;
+  --bg-card: #ffffff;
+  --bg-subtle: #eae5d9;
+  --ink: #111318;
+  --ink-muted: #5a5f6b;
+  --border: #111318;
+  --border-subtle: #c8c2b4;
+  
+  --accent-main: var(--electric-purple);
+  --accent-pop: var(--hot-pink);
+  --card-shadow: 4px 4px 0px #111318;
+  --button-hover: var(--acid-green);
+
+  /* Status Colors (Light Mode) */
+  --st-locked-bg: #ccff00;
+  --st-locked-text: #000000;
+  --st-likely-bg: #00f0ff;
+  --st-likely-text: #000000;
+  --st-choosing-bg: #ffee00;
+  --st-choosing-text: #000000;
+  --st-gametime-bg: #ff9900;
+  --st-gametime-text: #000000;
+  --st-skip-bg: #e2dacb;
+  --st-skip-text: #5a5f6b;
+
+  /* Fonts */
+  --font-display: "Archivo Black", "Space Grotesk", sans-serif;
+  --font-subhead: "Space Grotesk", sans-serif;
+  --font-mono: "Space Mono", monospace;
+}
+
+[data-theme="dark"] {
+  /* Dark Mode (Late-night club flyer / Acid house poster) */
+  --bg: #0a0c10;
+  --bg-card: #12151e;
+  --bg-subtle: #1a1e29;
+  --ink: #f0f4f8;
+  --ink-muted: #94a3b8;
+  --border: #00f0ff;
+  --border-subtle: #2d3548;
+  
+  --accent-main: var(--acid-green);
+  --accent-pop: var(--bright-cyan);
+  --card-shadow: 5px 5px 0px var(--hot-pink);
+  --button-hover: var(--fluro-yellow);
+
+  /* Status Colors (Dark Mode) */
+  --st-locked-bg: #ccff00;
+  --st-locked-text: #000000;
+  --st-likely-bg: #00f0ff;
+  --st-likely-text: #000000;
+  --st-choosing-bg: #ffee00;
+  --st-choosing-text: #000000;
+  --st-gametime-bg: #ff9900;
+  --st-gametime-text: #000000;
+  --st-skip-bg: #232a3b;
+  --st-skip-text: #64748b;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; max-width: 100%; overflow-x: hidden; }
+body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-subhead);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  max-width: 100%;
+  overflow-x: hidden;
+  transition: background 0.15s, color 0.15s;
+}
+
+.wrap { max-width: 680px; margin: 0 auto; padding: 0 16px 40px; }
+
+/* ---------- TOP CONTROL BAR ---------- */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 16px 0 12px; border-bottom: 2px solid var(--ink);
+}
+.topbar .stamp {
+  font-family: var(--font-mono); text-transform: uppercase;
+  font-size: 11px; font-weight: 700; letter-spacing: .05em;
+  background: var(--ink); color: var(--bg); padding: 3px 8px;
+  border-radius: 2px;
+}
+.controls { display: flex; gap: 8px; align-items: center; }
+button.theme-toggle {
+  appearance: none; cursor: pointer; background: var(--bg-card);
+  border: 2px solid var(--ink); border-radius: 0px; color: var(--ink);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  padding: 6px 12px; text-transform: uppercase;
+  box-shadow: 2px 2px 0px var(--ink);
+  transition: transform 0.05s, box-shadow 0.05s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  line-height: 1;
+}
+button.theme-toggle:hover { background: var(--button-hover); color: #000; }
+button.theme-toggle:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--ink); }
+
+/* ---------- HERO ---------- */
+header.hero { padding: 24px 0 16px; position: relative; width: 100%; max-width: 100%; }
+h1.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 8.8vw, 61px);
+  line-height: 1; letter-spacing: -0.03em; margin: 0;
+  text-transform: uppercase; color: var(--ink);
+  text-shadow: 3px 3px 0px #00d9ff;
+  white-space: nowrap;
+  width: 100%;
+  max-width: 100%;
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.05s, text-shadow 0.05s;
+}
+h1.hero-title:hover {
+  transform: translate(-1px, -1px);
+  text-shadow: 4px 4px 0px #00d9ff;
+}
+
+@media(max-width: 480px) {
+  h1.hero-title {
+    white-space: normal;
+  }
+}
+
+/* ---------- LANDING PAGE NAV TILES ---------- */
+.landing-grid {
+  display: flex; flex-direction: column; gap: 16px; margin-top: 24px;
+}
+.nav-tile {
+  background: var(--bg-card); border: 3px solid var(--ink);
+  padding: 24px 20px; box-shadow: 6px 6px 0px var(--ink);
+  cursor: pointer; text-decoration: none; color: var(--ink);
+  display: flex; justify-content: space-between; align-items: center;
+  transition: transform 0.1s, box-shadow 0.1s, background-color 0.1s;
+}
+.nav-tile:hover {
+  transform: translate(-2px, -2px);
+  background: var(--bg-subtle);
+}
+.nav-tile:active {
+  transform: translate(2px, 2px);
+  box-shadow: 3px 3px 0px var(--ink);
+}
+.nav-tile-content { display: flex; flex-direction: column; gap: 4px; }
+
+.nav-tile-title {
+  font-family: var(--font-display); font-size: clamp(22px, 5vw, 32px);
+  text-transform: uppercase; line-height: 1.1; margin: 0;
+}
+.nav-tile-sub {
+  font-family: var(--font-mono); font-size: 13px; color: var(--ink-muted); margin-top: 2px;
+}
+.nav-tile-arrow {
+  font-family: var(--font-display); font-size: 28px; line-height: 1;
+  transition: transform 0.1s ease;
+}
+.nav-tile:hover .nav-tile-arrow {
+  transform: translateX(4px);
+}
+
+/* CARD 1: WHAT'S NEXT? — ACID GREEN */
+.nav-tile.tile-1 {
+  background: #f7ffe0;
+  border-color: var(--acid-green);
+  box-shadow: 6px 6px 0px var(--acid-green);
+}
+.nav-tile.tile-1:hover {
+  background: #efffc2;
+  border-color: var(--acid-green);
+  box-shadow: 8px 8px 0px var(--acid-green);
+}
+[data-theme="dark"] .nav-tile.tile-1 {
+  background: #15190f;
+  border-color: var(--acid-green);
+  box-shadow: 6px 6px 0px var(--acid-green);
+}
+[data-theme="dark"] .nav-tile.tile-1:hover {
+  background: #1a2110;
+  border-color: var(--acid-green);
+  box-shadow: 8px 8px 0px var(--acid-green);
+}
+
+/* CARD 2: WHAT'S THE VIBE? — ELECTRIC PURPLE */
+.nav-tile.tile-2 {
+  background: #f4efff;
+  border-color: var(--electric-purple);
+  box-shadow: 6px 6px 0px var(--electric-purple);
+}
+.nav-tile.tile-2:hover {
+  background: #ebe1ff;
+  border-color: var(--electric-purple);
+  box-shadow: 8px 8px 0px var(--electric-purple);
+}
+[data-theme="dark"] .nav-tile.tile-2 {
+  background: #15111f;
+  border-color: var(--electric-purple);
+  box-shadow: 6px 6px 0px var(--electric-purple);
+}
+[data-theme="dark"] .nav-tile.tile-2:hover {
+  background: #1b1428;
+  border-color: var(--electric-purple);
+  box-shadow: 8px 8px 0px var(--electric-purple);
+}
+
+/* CARD 3: WHAT'D WE DO? — PUNCHY ORANGE */
+.nav-tile.tile-3 {
+  background: #fff2e8;
+  border-color: var(--punchy-orange);
+  box-shadow: 6px 6px 0px var(--punchy-orange);
+}
+.nav-tile.tile-3:hover {
+  background: #ffe5d3;
+  border-color: var(--punchy-orange);
+  box-shadow: 8px 8px 0px var(--punchy-orange);
+}
+[data-theme="dark"] .nav-tile.tile-3 {
+  background: #1d130f;
+  border-color: var(--punchy-orange);
+  box-shadow: 6px 6px 0px var(--punchy-orange);
+}
+[data-theme="dark"] .nav-tile.tile-3:hover {
+  background: #27170f;
+  border-color: var(--punchy-orange);
+  box-shadow: 8px 8px 0px var(--punchy-orange);
+}
+
+/* ---------- NAV TABS (RAVE STUBS) ---------- */
+.tabbar-outer {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg); padding: 12px 0 8px;
+  border-bottom: 2px solid var(--ink); margin-bottom: 24px;
+  display: none;
+}
+.tabbar-outer.is-visible { display: block; }
+.tabbar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+.tabbar::-webkit-scrollbar { display: none; }
+.tab {
+  flex: 0 0 auto; background: var(--bg-card); border: 2px solid var(--ink);
+  color: var(--ink); padding: 8px 12px; border-radius: 0px;
+  font-family: var(--font-display); font-size: 12px;
+  text-transform: uppercase; white-space: nowrap; cursor: pointer;
+  box-shadow: 2px 2px 0px var(--ink); transition: all 0.1s;
+}
+.tab:hover { background: var(--button-hover); color: #000; }
+.tab[aria-selected="true"] {
+  background: var(--accent-main); color: #000; border-color: var(--ink);
+  box-shadow: 3px 3px 0px var(--ink); transform: translate(-1px, -1px);
+}
+
+.panel { display: none; }
+.panel.is-active { display: block; }
+
+/* ---------- GRID & STAT CARDS ---------- */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.stat-card {
+  background: var(--bg-card); border: 2px solid var(--ink);
+  padding: 12px; box-shadow: var(--card-shadow);
+}
+.stat-card .lbl { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--ink-muted); }
+.stat-card .val { font-family: var(--font-display); font-size: 24px; line-height: 1.1; margin-top: 4px; color: var(--ink); }
+.stat-card .sub { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); margin-top: 4px; }
+
+/* ACTIVE VIBE BANNER BAR */
+.active-vibe-banner {
+  background: var(--acid-green); color: #000; border: 2px solid var(--ink);
+  padding: 8px 12px; margin-bottom: 16px; font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  display: flex; justify-content: space-between; align-items: center; box-shadow: 2px 2px 0 var(--ink);
+}
+.btn-clear-vibe {
+  background: var(--ink); color: var(--bg); border: none; font-family: var(--font-mono); font-size: 10px;
+  font-weight: 700; padding: 4px 8px; cursor: pointer; text-transform: uppercase;
+}
+.btn-clear-vibe:hover { background: var(--hot-pink); color: #fff; }
+
+/* SITE'S TAKE BADGE */
+.sites-take-badge {
+  background: var(--bg-subtle); border: 1.5px solid var(--ink);
+  padding: 6px 10px; margin-top: 10px; font-family: var(--font-mono); font-size: 11px;
+  font-weight: 700; text-transform: uppercase; color: var(--electric-purple);
+  display: flex; align-items: center; gap: 6px;
+}
+[data-theme="dark"] .sites-take-badge {
+  color: var(--acid-green);
+}
+
+/* VIBE ROUTE ACTION LINK */
+.vibe-route-action-row {
+  display: flex; gap: 8px; margin-top: 8px;
+}
+.vibe-route-action {
+  flex: 1; background: var(--ink); color: var(--bg); border: 2px solid var(--ink);
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase;
+  padding: 6px 10px; text-align: center; cursor: pointer; text-decoration: none; display: block;
+}
+.vibe-route-action:hover { background: var(--acid-green); color: #000; }
+.vibe-route-action.secondary {
+  background: var(--bg-card); color: var(--ink);
+}
+.vibe-route-action.secondary:hover { background: var(--button-hover); color: #000; }
+
+/* ---------- EVENT LIST & CARDS ---------- */
+.section-title {
+  font-family: var(--font-display); font-size: 24px; text-transform: uppercase;
+  margin: 0 0 4px; line-height: 1; letter-spacing: -0.01em;
+}
+.section-note { font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted); margin: 0 0 16px; }
+
+.event-card {
+  background: var(--bg-card); border: 2px solid var(--ink);
+  padding: 14px; margin-bottom: 12px; box-shadow: var(--card-shadow);
+  position: relative; transition: border-color 0.15s, opacity 0.15s, transform 0.1s;
+}
+.event-card.skip-state { opacity: 0.55; }
+.event-card.skip-state:hover { opacity: 1; }
+.event-card.vibe-highlighted {
+  border-color: var(--hot-pink);
+  box-shadow: 5px 5px 0px var(--hot-pink);
+  transform: translate(-2px, -2px);
+}
+.event-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+.event-date {
+  font-family: var(--font-mono); font-weight: 700; font-size: 12px;
+  background: var(--ink); color: var(--bg); padding: 2px 6px; display: inline-block;
+}
+.event-title { font-family: var(--font-display); font-size: 19px; line-height: 1.15; margin: 4px 0 2px; text-transform: uppercase; }
+.event-venue { font-family: var(--font-subhead); font-weight: 700; font-size: 13px; color: var(--ink-muted); }
+
+.tag-badge {
+  background: var(--bg-subtle); border: 1px solid var(--ink);
+  padding: 2px 6px; font-size: 10px; font-weight: 700; text-transform: uppercase;
+}
+.tag-badge.fest { background: var(--hot-pink); color: #fff; }
+.tag-badge.dj { background: var(--bright-cyan); color: #000; }
+.tag-badge.band { background: var(--fluro-yellow); color: #000; }
+.tag-badge.choose { background: var(--punchy-orange); color: #fff; font-weight: 700; }
+
+.event-actions { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+
+/* DID WE GO ATTENDANCE BANNER */
+.attendance-prompt {
+  background: var(--bg-subtle); border: 2px dashed var(--ink);
+  padding: 10px 12px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+}
+.attendance-prompt .prompt-text { font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.attendance-btns { display: flex; gap: 6px; }
+.btn-att {
+  appearance: none; cursor: pointer; border: 2px solid var(--ink); font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 4px 10px; box-shadow: 2px 2px 0 var(--ink);
+}
+.btn-att-yes { background: var(--acid-green); color: #000; }
+.btn-att-yes:hover { background: var(--fluro-yellow); }
+.btn-att-no { background: var(--bg-card); color: var(--ink); }
+.btn-att-no:hover { background: var(--hot-pink); color: #fff; }
+.btn-att:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+
+/* SEGMENTED SAME-DATE TABS */
+.date-group-card {
+  background: var(--bg-card); border: 2px solid var(--ink);
+  padding: 14px; margin-bottom: 16px; box-shadow: var(--card-shadow);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+.date-group-card.vibe-highlighted {
+  border-color: var(--hot-pink);
+  box-shadow: 6px 6px 0px var(--hot-pink);
+  transform: translate(-2px, -2px);
+}
+.date-group-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.date-group-label {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; background: var(--hot-pink); color: #fff; padding: 2px 6px;
+}
+.segmented-tabs {
+  display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none;
+  background: var(--bg-subtle); padding: 4px; border: 2px solid var(--ink); margin-bottom: 12px;
+}
+.segmented-tabs::-webkit-scrollbar { display: none; }
+.seg-tab {
+  flex: 1 0 auto; text-align: center; background: transparent; border: none;
+  font-family: var(--font-display); font-size: 11px; text-transform: uppercase;
+  padding: 6px 10px; cursor: pointer; color: var(--ink); white-space: nowrap;
+}
+.seg-tab.active {
+  background: var(--ink); color: var(--bg); box-shadow: 2px 2px 0 var(--accent-main);
+}
+
+/* Custom Styled Select with 5 Status Colors */
+select.status-select {
+  appearance: none; color: #000;
+  border: 2px solid var(--ink); font-family: var(--font-mono); font-size: 11px;
+  font-weight: 700; text-transform: uppercase; padding: 6px 24px 6px 10px;
+  cursor: pointer; border-radius: 0; box-shadow: 2px 2px 0 var(--ink);
+  background-image: url('data:image/svg+xml;utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E');
+  background-position: right 8px center; background-repeat: no-repeat;
+  transition: background-color 0.15s;
+}
+
+select.status-select.st-locked { background-color: var(--st-locked-bg); color: var(--st-locked-text); }
+select.status-select.st-likely { background-color: var(--st-likely-bg); color: var(--st-likely-text); }
+select.status-select.st-choosing { background-color: var(--st-choosing-bg); color: var(--st-choosing-text); }
+select.status-select.st-gametime { background-color: var(--st-gametime-bg); color: var(--st-gametime-text); }
+select.status-select.st-skip { background-color: var(--st-skip-bg); color: var(--st-skip-text); }
+
+/* ---------- SPECIAL CARD INPUTS ---------- */
+.inline-input-box {
+  background: var(--bg-subtle); border: 1px solid var(--ink);
+  padding: 8px 10px; margin-top: 8px; font-family: var(--font-mono); font-size: 11px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.inline-input-box input[type="date"] {
+  background: var(--bg-card); color: var(--ink); border: 1px solid var(--ink);
+  padding: 4px 6px; font-family: var(--font-mono); font-size: 11px;
+}
+
+/* ---------- ADD A SHOW FORM & BUTTON ---------- */
+.add-show-btn-container { margin: 24px 0 32px; text-align: center; }
+.btn-add-show {
+  appearance: none; cursor: pointer; background: var(--acid-green); color: #000;
+  border: 2px solid var(--ink); font-family: var(--font-display); font-size: 14px;
+  text-transform: uppercase; padding: 12px 20px; box-shadow: 4px 4px 0px var(--ink);
+  transition: all 0.1s; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-add-show:hover { background: var(--fluro-yellow); transform: translate(-1px, -1px); box-shadow: 5px 5px 0px var(--ink); }
+.btn-add-show:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0px var(--ink); }
+
+.add-show-card {
+  background: var(--bg-card); border: 3px solid var(--ink); padding: 16px;
+  margin-bottom: 24px; box-shadow: 6px 6px 0px var(--hot-pink); display: none;
+}
+.add-show-card.is-open { display: block; }
+.add-show-title { font-family: var(--font-display); font-size: 18px; text-transform: uppercase; margin: 0 0 12px; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media(max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
+.form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-group label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--ink-muted); }
+.form-group input, .form-group select {
+  background: var(--bg-subtle); color: var(--ink); border: 1.5px solid var(--ink);
+  padding: 6px 8px; font-family: var(--font-mono); font-size: 12px; border-radius: 0;
+}
+.form-actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; margin-top: 12px; }
+.btn-submit {
+  background: var(--ink); color: var(--bg); border: 2px solid var(--ink);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase;
+  padding: 8px 14px; cursor: pointer; box-shadow: 2px 2px 0 var(--acid-green);
+}
+.btn-submit:hover:not(:disabled) { background: var(--acid-green); color: #000; }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-cancel {
+  background: transparent; color: var(--ink); border: 1.5px solid var(--ink);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase;
+  padding: 8px 12px; cursor: pointer;
+}
+
+.form-inline-msg {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase;
+  color: var(--hot-pink); margin-right: auto; display: none;
+}
+.form-inline-msg.is-visible { display: inline-block; }
+
+.custom-card-controls {
+  margin-top: 8px; padding-top: 6px; border-top: 1px dotted var(--border-subtle);
+  display: flex; gap: 10px; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;
+}
+.btn-text-action { background: none; border: none; padding: 0; color: var(--hot-pink); cursor: pointer; font-weight: 700; }
+.btn-text-action:hover { text-decoration: underline; }
+
+/* ---------- OUTSIDE LANDS DUAL-COLUMN RECAP ---------- */
+.osl-recap-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;
+}
+@media (max-width: 540px) {
+  .osl-recap-grid { grid-template-columns: 1fr; }
+}
+.osl-day-col {
+  background: var(--bg-subtle); border: 1px solid var(--ink); padding: 8px 10px;
+}
+.osl-day-title {
+  font-family: var(--font-display); font-size: 12px; text-transform: uppercase;
+  color: var(--hot-pink); border-bottom: 1px solid var(--ink); padding-bottom: 4px; margin-bottom: 6px;
+}
+.osl-chip-list { display: flex; flex-direction: column; gap: 4px; }
+.osl-chip {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 2px 6px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.osl-chip .partial-tag {
+  font-size: 9px; text-transform: uppercase; background: var(--fluro-yellow); color: #000; padding: 1px 4px; font-weight: 700;
+}
+
+/* ---------- PICK YOUR VIBE STYLES ---------- */
+.vibe-routes-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;
+}
+@media(max-width: 600px) {
+  .vibe-routes-grid { grid-template-columns: 1fr; }
+}
+.vibe-route-card {
+  background: var(--bg-card); border: 3px solid var(--ink);
+  padding: 16px; box-shadow: var(--card-shadow);
+  display: flex; flex-direction: column; justify-content: space-between;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+.vibe-route-card.is-highlighted {
+  border-color: var(--hot-pink);
+  transform: translate(-3px, -3px);
+  box-shadow: 7px 7px 0px var(--hot-pink);
+  animation: ravePulse 0.4s ease-in-out alternate;
+}
+
+@keyframes ravePulse {
+  0% { transform: scale(1) translate(0, 0); box-shadow: 4px 4px 0px var(--ink); }
+  50% { transform: scale(1.02) translate(-3px, -3px); box-shadow: 8px 8px 0px var(--acid-green); border-color: var(--acid-green); }
+  100% { transform: scale(1) translate(-3px, -3px); box-shadow: 7px 7px 0px var(--hot-pink); border-color: var(--hot-pink); }
+}
+
+.vibe-route-header { margin-bottom: 12px; border-bottom: 2px solid var(--ink); padding-bottom: 8px; }
+.vibe-route-title {
+  font-family: var(--font-display); font-size: 18px; text-transform: uppercase; margin: 0 0 4px;
+}
+.vibe-route-tagline {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); font-style: italic; margin: 0;
+}
+.vibe-route-status-msg {
+  background: var(--bg-subtle); border: 1px solid var(--ink);
+  padding: 6px 8px; font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  text-transform: uppercase; margin-bottom: 10px; color: var(--hot-pink);
+}
+.vibe-route-status-msg.surprise-active {
+  background: var(--acid-green); color: #000; border-color: var(--ink);
+}
+
+.vibe-route-picks { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.vibe-pick-item {
+  background: var(--bg-subtle); border: 1px solid var(--border-subtle);
+  padding: 6px 8px; display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-mono); font-size: 11px;
+}
+.vibe-pick-item.is-locked-likely { border-color: var(--ink); background: var(--bg-card); font-weight: 700; }
+
+.vibe-top-bar {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+}
+.btn-surprise {
+  appearance: none; cursor: pointer; background: var(--bright-cyan); color: #000;
+  border: 2px solid var(--ink); font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; padding: 6px 12px; box-shadow: 2px 2px 0px var(--ink);
+  transition: all 0.1s;
+}
+.btn-surprise:hover { background: var(--acid-green); transform: translate(-1px, -1px); box-shadow: 3px 3px 0px var(--ink); }
+
+/* ---------- ANNUAL VIBE VERDICT & WHAT THE CALENDAR NEEDS ---------- */
+.damage-container {
+  background: var(--bg-card); border: 3px solid var(--ink);
+  padding: 24px 20px; margin-top: 32px; box-shadow: 6px 6px 0px var(--accent-pop);
+}
+.damage-title {
+  font-family: var(--font-display); font-size: clamp(28px, 6vw, 42px);
+  text-transform: uppercase; line-height: 0.9; margin: 0 0 4px;
+  color: var(--ink);
+}
+.damage-subtitle { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 16px; }
+
+.vibe-box {
+  background: var(--accent-main); color: #000; border: 2px solid var(--ink);
+  padding: 18px 16px; box-shadow: 4px 4px 0px var(--ink); margin-bottom: 20px;
+}
+.vibe-kicker { font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; color: #000; opacity: 0.9; }
+.vibe-label { font-family: var(--font-display); font-size: clamp(22px, 5vw, 28px); text-transform: uppercase; line-height: 1; margin: 0 0 8px; }
+.vibe-desc { font-family: var(--font-subhead); font-size: 14px; font-weight: 500; margin: 0; line-height: 1.45; }
+
+/* ---------- DECISION SIGNALS: WHAT WOULD ACTUALLY ADD SOMETHING? ---------- */
+.needs-container {
+  background: var(--bg-subtle); border: 2px solid var(--ink);
+  padding: 16px; margin-bottom: 20px;
+}
+.needs-title {
+  font-family: var(--font-display); font-size: 14px; text-transform: uppercase;
+  margin-bottom: 10px; border-bottom: 2px solid var(--ink); padding-bottom: 6px;
+}
+.decision-signal { padding: 12px 0; border-bottom: 1px dashed var(--border-subtle); }
+.decision-signal:last-child { border-bottom: 0; padding-bottom: 0; }
+.decision-signal:first-child { padding-top: 0; }
+.decision-signal-head { display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:5px; }
+.decision-signal-label { font-family:var(--font-mono); font-size:11px; font-weight:700; text-transform:uppercase; }
+.decision-state { border:1.5px solid var(--ink); padding:3px 7px; font-family:var(--font-mono); font-size:10px; font-weight:700; text-transform:uppercase; box-shadow:1px 1px 0 var(--ink); }
+.decision-state.add { background:var(--acid-green); color:#000; }
+.decision-state.room { background:var(--bright-cyan); color:#000; }
+.decision-state.covered { background:var(--fluro-yellow); color:#000; }
+.decision-state.special { background:var(--hot-pink); color:#fff; }
+.decision-signal-diagnosis { font-family:var(--font-subhead); font-size:12.5px; line-height:1.35; color:var(--ink); }
+.decision-signal-action { font-family:var(--font-mono); font-size:11px; font-weight:700; margin-top:3px; color:var(--electric-purple); }
+[data-theme="dark"] .decision-signal-action { color:var(--acid-green); }
+
+/* ---------- YEAR SO FAR: SEASONAL MUSIC DIARY ---------- */
+.season-block { margin: 22px 0 28px; }
+.season-heading { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.season-heading span { font-family:var(--font-display); font-size:18px; text-transform:uppercase; }
+.season-heading::after { content:""; height:2px; background:var(--ink); flex:1; }
+.past-diary-card { background:var(--bg-card); border:2px solid var(--ink); padding:14px; margin-bottom:10px; box-shadow:3px 3px 0 var(--border-subtle); }
+.past-diary-top { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+.past-diary-meta { display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; }
+.past-type-badge, .past-room-badge { border:1px solid var(--ink); padding:2px 6px; font-family:var(--font-mono); font-size:9px; font-weight:700; text-transform:uppercase; }
+.past-type-badge.dj { background:var(--bright-cyan); color:#000; }
+.past-type-badge.band { background:var(--fluro-yellow); color:#000; }
+.past-type-badge.fest { background:var(--hot-pink); color:#fff; }
+.past-room-badge { background:var(--bg-subtle); color:var(--ink); }
+.past-editorial { margin-top:9px; font-family:var(--font-subhead); font-size:12.5px; line-height:1.4; }
+.year-in-rooms { background:var(--ink); color:var(--bg); border:2px solid var(--ink); padding:12px 14px; margin:0 0 20px; box-shadow:4px 4px 0 var(--bright-cyan); }
+.year-in-rooms-title { font-family:var(--font-display); font-size:13px; text-transform:uppercase; margin-bottom:4px; }
+.year-in-rooms-copy { font-family:var(--font-mono); font-size:10.5px; line-height:1.45; }
+
+/* ---------- YEAR AHEAD: THE LINEUP WE PICKED ---------- */
+.ahead-hero { background:var(--bg-card); border:3px solid var(--ink); padding:18px 18px 16px; margin-bottom:24px; box-shadow:6px 6px 0 var(--bright-cyan); position:relative; overflow:hidden; }
+.ahead-hero::after { content:""; position:absolute; right:-22px; top:-28px; width:92px; height:92px; background:var(--hot-pink); transform:rotate(18deg); opacity:.16; pointer-events:none; }
+.ahead-kicker { display:inline-block; background:var(--hot-pink); color:#fff; border:1.5px solid var(--ink); padding:3px 7px; font-family:var(--font-mono); font-size:10px; font-weight:700; text-transform:uppercase; margin-bottom:9px; }
+.ahead-hero-title { font-family:var(--font-display); font-size:clamp(26px,6vw,38px); line-height:.95; text-transform:uppercase; margin:0 0 8px; }
+.ahead-hero-copy { font-family:var(--font-subhead); font-size:14px; line-height:1.4; margin:0; max-width:560px; }
+.ahead-hero-stats { margin-top:12px; padding-top:10px; border-top:1px dashed var(--border-subtle); font-family:var(--font-mono); font-size:10.5px; font-weight:700; text-transform:uppercase; }
+.ahead-month { margin:22px 0 30px; }
+.ahead-month-title { display:inline-block; font-family:var(--font-display); font-size:20px; text-transform:uppercase; background:var(--acid-green); color:#000; border:2px solid var(--ink); padding:4px 9px; margin-bottom:10px; box-shadow:3px 3px 0 var(--ink); }
+.ahead-month:nth-of-type(3n+1) .ahead-month-title { background:var(--bright-cyan); }
+.ahead-month:nth-of-type(3n+2) .ahead-month-title { background:var(--fluro-yellow); }
+.ahead-month:nth-of-type(3n) .ahead-month-title { background:var(--hot-pink); color:#fff; }
+.ahead-row { display:grid; grid-template-columns:52px 1fr; gap:10px; align-items:start; padding:12px 10px; border:2px solid var(--ink); border-bottom-width:1px; background:var(--bg-card); }
+.ahead-row:last-child { border-bottom-width:2px; }
+.ahead-row:hover { transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--border-subtle); }
+.ahead-date { font-family:var(--font-mono); font-size:14px; font-weight:700; background:var(--ink); color:var(--bg); display:inline-block; text-align:center; padding:3px 4px; }
+.ahead-artist-line { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.ahead-artist { font-family:var(--font-display); font-size:17px; text-transform:uppercase; line-height:1.08; }
+.ahead-kind { border:1px solid var(--ink); padding:1px 5px; font-family:var(--font-mono); font-size:8.5px; font-weight:700; text-transform:uppercase; }
+.ahead-kind.dj { background:var(--bright-cyan); color:#000; }
+.ahead-kind.band { background:var(--fluro-yellow); color:#000; }
+.ahead-kind.fest { background:var(--hot-pink); color:#fff; }
+.ahead-venue { font-family:var(--font-subhead); font-size:12px; color:var(--ink-muted); margin-top:3px; }
+.ahead-summary { margin-top:24px; background:var(--ink); color:var(--bg); border:2px solid var(--ink); padding:11px 12px; font-family:var(--font-mono); font-size:10.5px; font-weight:700; text-transform:uppercase; box-shadow:4px 4px 0 var(--hot-pink); }
+.ahead-empty { border:2px dashed var(--ink); padding:22px 16px; text-align:center; font-family:var(--font-mono); font-size:11px; }
+@media(max-width:520px){ .ahead-row { grid-template-columns:42px 1fr; } .ahead-hero { padding:15px; } }
+
+.final-editorial-line {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  text-transform: uppercase; text-align: center; padding: 10px;
+  background: var(--bg-card); border: 2px dashed var(--ink); color: var(--ink);
+}
+
+/* ---------- CALENDAR VIEW ---------- */
+.calendar-shell {
+  background: var(--bg-card); border: 3px solid var(--ink); padding: 14px;
+  box-shadow: 6px 6px 0px var(--accent-main); margin-bottom: 20px;
+}
+.calendar-toolbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  margin-bottom: 12px; flex-wrap: wrap;
+}
+.calendar-month-title {
+  font-family: var(--font-display); font-size: clamp(20px, 5vw, 28px);
+  text-transform: uppercase; line-height: 1;
+}
+.calendar-month-controls { display: flex; gap: 6px; }
+.calendar-arrow {
+  appearance: none; cursor: pointer; background: var(--bg-subtle); color: var(--ink);
+  border: 2px solid var(--ink); font-family: var(--font-display); font-size: 13px;
+  padding: 6px 10px; box-shadow: 2px 2px 0 var(--ink);
+}
+.calendar-arrow:hover:not(:disabled) { background: var(--button-hover); color: #000; }
+.calendar-arrow:disabled { opacity: .3; cursor: default; }
+.calendar-weekdays, .calendar-grid {
+  display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.calendar-weekdays {
+  border: 2px solid var(--ink); border-bottom: 0;
+  background: var(--ink); color: var(--bg);
+}
+.calendar-weekday {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  text-transform: uppercase; text-align: center; padding: 5px 2px;
+}
+.calendar-grid { border-left: 2px solid var(--ink); border-top: 2px solid var(--ink); }
+.calendar-day {
+  min-height: 86px; padding: 5px; background: var(--bg-card);
+  border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+  overflow: hidden;
+}
+.calendar-day.is-empty { background: var(--bg-subtle); opacity: .55; }
+.calendar-day.is-today { box-shadow: inset 0 0 0 3px var(--hot-pink); }
+.calendar-date-num {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  margin-bottom: 4px; display: inline-block;
+}
+.calendar-day.is-today .calendar-date-num {
+  background: var(--hot-pink); color: #fff; padding: 1px 4px;
+}
+.calendar-events { display: flex; flex-direction: column; gap: 3px; }
+.cal-event {
+  width: 100%; appearance: none; cursor: pointer; text-align: left;
+  border: 1.5px solid #111318; padding: 3px 4px; font-family: var(--font-mono);
+  font-size: 8.5px; line-height: 1.2; font-weight: 700; color: #000;
+  overflow: hidden; text-overflow: ellipsis; box-shadow: 1px 1px 0 #111318;
+}
+.cal-event:hover { transform: translate(-1px, -1px); box-shadow: 2px 2px 0 #111318; }
+.cal-event.st-locked { background: var(--st-locked-bg); color: var(--st-locked-text); }
+.cal-event.st-likely { background: var(--st-likely-bg); color: var(--st-likely-text); }
+.cal-event.st-choosing { background: var(--st-choosing-bg); color: var(--st-choosing-text); }
+.cal-event.st-gametime { background: var(--st-gametime-bg); color: var(--st-gametime-text); }
+.cal-event.st-skip { background: var(--st-skip-bg); color: var(--st-skip-text); opacity: .65; }
+.calendar-legend {
+  display: flex; flex-wrap: wrap; gap: 6px 10px; margin: 12px 0 0;
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700; text-transform: uppercase;
+}
+.calendar-legend-item { display: flex; align-items: center; gap: 4px; }
+.calendar-legend-swatch { width: 10px; height: 10px; border: 1px solid var(--ink); }
+.calendar-tbd {
+  margin-top: 14px; border-top: 2px dashed var(--ink); padding-top: 10px;
+}
+.calendar-tbd-title {
+  font-family: var(--font-display); font-size: 12px; text-transform: uppercase; margin-bottom: 6px;
+}
+.calendar-tbd-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.calendar-tbd .cal-event { width: auto; max-width: 100%; padding: 5px 7px; }
+.calendar-note {
+  font-family: var(--font-mono); font-size: 10px; color: var(--ink-muted); margin: 8px 0 0;
+}
+@media (max-width: 560px) {
+  .calendar-shell { padding: 8px; }
+  .calendar-day { min-height: 72px; padding: 3px; }
+  .calendar-date-num { font-size: 9px; }
+  .cal-event { font-size: 7.5px; padding: 2px 3px; }
+  .calendar-weekday { font-size: 8px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <span class="stamp">2026 CONCERT TRACKER</span>
+    <div class="controls">
+      <button type="button" class="theme-toggle" id="theme-btn" aria-label="Switch to light mode">☾ DARK</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <h1 class="hero-title" id="heroTitle">WHAT'S THE MOVE?</h1>
+  </header>
+
+  <!-- STICKY SECTION NAVIGATION -->
+  <div class="tabbar-outer" id="sectionNavOuter">
+    <div class="tabbar" role="tablist">
+      <button class="tab" data-nav="rest" aria-selected="false">REST OF 2026</button>
+      <button class="tab" data-nav="vibe" aria-selected="false">PICK YOUR VIBE</button>
+      <button class="tab" data-nav="year" aria-selected="false">YEAR SO FAR</button>
+      <button class="tab" data-nav="calendar" aria-selected="false">CALENDAR</button>
+      <button class="tab" data-nav="ahead" aria-selected="false">YEAR AHEAD</button>
+    </div>
+  </div>
+
+  <!-- LANDING PAGE HOME VIEW -->
+  <section class="panel is-active" id="panel-home">
+    <div class="landing-grid">
+      <div class="nav-tile tile-1" data-navtarget="rest">
+        <div class="nav-tile-content">
+          <h2 class="nav-tile-title">WHAT’S NEXT?</h2>
+          <span class="nav-tile-sub">See the current plan &amp; make decisions.</span>
+        </div>
+        <span class="nav-tile-arrow">&rarr;</span>
+      </div>
+
+      <div class="nav-tile tile-2" data-navtarget="vibe">
+        <div class="nav-tile-content">
+          <h2 class="nav-tile-title">WHAT’S THE VIBE?</h2>
+          <span class="nav-tile-sub">See how different choices shape the year.</span>
+        </div>
+        <span class="nav-tile-arrow">&rarr;</span>
+      </div>
+
+      <div class="nav-tile tile-3" data-navtarget="year">
+        <div class="nav-tile-content">
+          <h2 class="nav-tile-title">WHAT’D WE DO?</h2>
+          <span class="nav-tile-sub">Rewind 2026.</span>
+        </div>
+        <span class="nav-tile-arrow">&rarr;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 1: REST OF 2026 -->
+  <section class="panel" id="panel-rest">
+    <div id="activeVibeBannerContainer"></div>
+
+    <h2 class="section-title">WHAT'S LEFT</h2>
+    <p class="section-note">Toggle statuses below. Your master calendar updates dynamically.</p>
+    <div id="restEventsList"></div>
+
+    <!-- + ADD A SHOW FORM CONTAINER -->
+    <div class="add-show-card" id="addShowCard">
+      <div class="add-show-title" id="addShowFormHeading">+ ADD A SHOW</div>
+      <form id="addShowForm">
+        <input type="hidden" id="editEventId" value="">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label for="inputArtist">Artist / Event *</label>
+            <input type="text" id="inputArtist" required placeholder="e.g. Bicep">
+          </div>
+          <div class="form-group">
+            <label for="inputDate">Date *</label>
+            <input type="date" id="inputDate" required>
+          </div>
+          <div class="form-group">
+            <label for="inputVenue">Venue *</label>
+            <input type="text" id="inputVenue" required placeholder="e.g. Knockdown Center">
+          </div>
+          <div class="form-group">
+            <label for="inputPrice">Price ($ / FREE / TBD)</label>
+            <input type="text" id="inputPrice" placeholder="e.g. 35, FREE, or TBD">
+          </div>
+          <div class="form-group full">
+            <label for="inputType">Type</label>
+            <select id="inputType">
+              <option value="dj">DJ / Club</option>
+              <option value="band">Band / Live</option>
+              <option value="fest">Festival</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label for="inputStatus">Status</label>
+            <select id="inputStatus">
+              <option value="choosing">Still Choosing</option>
+              <option value="locked">Locked</option>
+              <option value="likely">Likely Yes</option>
+              <option value="gametime">Game Time Decision</option>
+              <option value="skip">Leaning Skip</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label for="inputCtx">Contextual Description</label>
+            <input type="text" id="inputCtx" placeholder="e.g. High-energy house set in a warehouse room.">
+          </div>
+        </div>
+        <div class="form-actions">
+          <span class="form-inline-msg" id="formInlineMsg">THIS SHOW IS ALREADY ON THE LIST.</span>
+          <button type="button" class="btn-cancel" id="btnCancelAddShow">Cancel</button>
+          <button type="submit" class="btn-submit" id="btnSaveShow">Save Show</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- + ADD A SHOW BUTTON -->
+    <div class="add-show-btn-container">
+      <button type="button" class="btn-add-show" id="btnOpenAddShow">+ ADD A SHOW</button>
+    </div>
+
+    <!-- ANNUAL VIBE VERDICT -->
+    <div class="damage-container" id="damageContainer">
+      <h3 class="damage-title">ANNUAL VIBE VERDICT</h3>
+      <div class="damage-subtitle">SEASONAL PACING &amp; VIBE VERDICT</div>
+
+      <div class="vibe-box">
+        <div class="vibe-kicker">YOUR 2026 MUSIC YEAR</div>
+        <div class="vibe-label" id="vibeTitle"></div>
+        <p class="vibe-desc" id="vibeDesc"></p>
+      </div>
+      <!-- DECISION-ORIENTED MARGINAL VALUE READOUT -->
+      <div class="needs-container">
+        <div class="needs-title">WHAT WOULD ACTUALLY ADD SOMETHING?</div>
+        <div id="decisionSignals"></div>
+      </div>
+
+      <div class="final-editorial-line" id="finalEditorialLine"></div>
+    </div>
+  </section>
+
+
+  <!-- TAB 2: CALENDAR -->
+  <section class="panel" id="panel-calendar">
+    <div class="calendar-toolbar">
+      <div>
+        <h2 class="section-title">MASTER CALENDAR</h2>
+        <p class="section-note" style="margin-bottom:0;">The rest of 2026 at a glance. Tap any show to jump to its decision card.</p>
+      </div>
+    </div>
+    <div id="calendarView"></div>
+  </section>
+
+  <!-- YEAR AHEAD: HERE'S WHAT YOU PICKED -->
+  <section class="panel" id="panel-ahead">
+    <div id="yearAheadView"></div>
+  </section>
+
+  <!-- TAB 3: PICK YOUR VIBE -->
+  <section class="panel" id="panel-vibe">
+    <div class="vibe-top-bar">
+      <div>
+        <h2 class="section-title">PICK YOUR VIBE</h2>
+        <p class="section-note" style="margin-bottom:0;">Eight ways to shape the rest of the year — based on the music, rooms and nights already on the board.</p>
+      </div>
+    </div>
+    <div class="vibe-routes-grid" id="vibeRoutesGrid"></div>
+  </section>
+
+  <!-- TAB 4: YEAR SO FAR -->
+  <section class="panel" id="panel-year">
+    <h2 class="section-title">YEAR SO FAR</h2>
+    <p class="section-note">The year in rooms, seasons and sound — not just a list of receipts.</p>
+    <div class="stats-grid" id="pastStats"></div>
+    <div id="pastEventsList"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* =========================================================
+   1. FORCE SCROLL TO TOP ON PAGE LOAD / REFRESH
+   ========================================================= */
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
+/* =========================================================
+   CURRENT DATE — USE THE VIEWER'S ACTUAL LOCAL CALENDAR DATE
+   ========================================================= */
+var CURRENT_DATE = new Date();
+CURRENT_DATE = new Date(CURRENT_DATE.getFullYear(), CURRENT_DATE.getMonth(), CURRENT_DATE.getDate());
+
+function parseEventDate(m, d, year) {
+  if(!m || !d) return null;
+  return new Date(year || 2026, m - 1, d);
+}
+
+function isDatePast(m, d, year) {
+  var evDate = parseEventDate(m, d, year);
+  if(!evDate) return false;
+  var evDay = new Date(evDate.getFullYear(), evDate.getMonth(), evDate.getDate());
+  var curDay = new Date(CURRENT_DATE.getFullYear(), CURRENT_DATE.getMonth(), CURRENT_DATE.getDate());
+  return evDay.getTime() < curDay.getTime();
+}
+
+/* =========================================================
+   5-LEVEL DECISION STATUS SYSTEM & WEIGHTING
+   ========================================================= */
+var STATUS = {
+  locked:   { label: "Locked", weight: 5, cssClass: "st-locked" },
+  likely:   { label: "Likely Yes", weight: 4, cssClass: "st-likely" },
+  choosing: { label: "Still Choosing", weight: 3, cssClass: "st-choosing" },
+  gametime: { label: "Game Time Decision", weight: 2, cssClass: "st-gametime" },
+  skip:     { label: "Leaning Skip", weight: 1, cssClass: "st-skip" }
+};
+
+var LEGACY_STATUS_MAP = {
+  committed: "locked",
+  gtd: "locked",
+  leaning: "likely",
+  deciding: "choosing",
+  choose1: "choosing",
+  optional: "gametime",
+  pending: "choosing",
+  likely_skip: "skip",
+  skip: "skip"
+};
+
+var INITIAL_EVENTS = [// Sept 4 Decision Group (CHOOSE 1)
+  { 
+    id:"sep04a", m:9, d:4, artist:"Eli Escobar", venue:"House of Yes", price:0, kind:"dj", local:true, def:"choosing", group:"SEP04", 
+    ctx:"Free Eli at House of Yes — the easiest, lowest-stakes option if the night just needs a great Brooklyn dance floor.",
+    tags: ["club", "cheap", "dj"], genreTags: ["house", "disco"], energy: "high", setting: "club", location: "Brooklyn", specialness: "notable", commitment: "easy",
+    venueType: "nightclub", venueScale: "mid-size", venueCharacter: ["underground", "dance-floor", "iconic"]
+  },
+  { 
+    id:"sep04b", m:9, d:4, artist:"MoBlack Records After Party", venue:"99 Scott", price:null, kind:"dj", local:true, def:"choosing", group:"SEP04", 
+    ctx:"Afro-house after-party at 99 Scott — the bigger late-night move if we want to turn Labor Day Friday into a proper club night.",
+    tags: ["club", "big-night", "dj"], genreTags: ["house", "electronic"], energy: "high", setting: "warehouse", location: "Brooklyn", specialness: "marquee", commitment: "big",
+    venueType: "warehouse", venueScale: "large", venueCharacter: ["underground", "late-night", "industrial"]
+  },
+  { 
+    id:"sep04c", m:9, d:4, artist:"Justin Strauss, Dimi Angélis, The AM/AMX", venue:"Public Records", price:21, kind:"dj", local:true, def:"likely", group:"SEP04", 
+    ctx:"NYC legend Justin Strauss plus Dimi Angélis and The AM/AMX at Public Records — an easy post-dinner move with a strong music-first lineup.",
+    tags: ["club", "house", "dj"], genreTags: ["house", "techno", "disco"], energy: "medium", setting: "club", location: "Brooklyn", specialness: "notable", commitment: "medium",
+    venueType: "listening-room", venueScale: "intimate", venueCharacter: ["listening-room", "polished", "intimate"]
+  },
+
+  { 
+    id:"sep10", m:9, d:10, artist:"Channel Tres", venue:"Knockdown Center", price:50, spentAlready:50, kind:"dj", local:true, def:"choosing", isChannelTres:true, 
+    ctx:"Live funk, house and hip-hop swagger — plus friends are already going, which gives this one an easy social pull.",
+    tags: ["big-night", "club", "dj"], genreTags: ["house", "funk", "pop", "electronic"], energy: "high", setting: "warehouse", location: "Queens", specialness: "marquee", commitment: "big",
+    venueType: "warehouse", venueScale: "large", venueCharacter: ["high-production", "iconic", "dance-floor"]
+  },
+  { 
+    id:"sep15", m:9, d:15, artist:"Way Dynamic", venue:"Music Hall of Wmsburg", price:15, spentAlready:15, isPurchased:true, kind:"band", local:true, def:"locked", 
+    ctx:"Small-room indie night and a nice palate cleanser from the increasingly DJ-heavy fall calendar.",
+    tags: ["band", "small-room", "curated"], genreTags: ["indie", "rock"], energy: "medium", setting: "small-room", location: "Brooklyn", specialness: "notable", commitment: "easy",
+    venueType: "small live room", venueScale: "small", venueCharacter: ["neighborhood", "intimate", "DIY"]
+  },
+  { 
+    id:"sep19", m:9, d:19, artist:"Eternal Love", venue:"Venue TBD", price:null, kind:"dj", local:true, def:"gametime", 
+    ctx:"Low-key Afro-house party vibe — perfect fallback if the weekend calls for dynamic dance floors.",
+    tags: ["club", "dj", "weird"], genreTags: ["house", "electronic"], energy: "medium", setting: "club", location: "Brooklyn", specialness: "casual", commitment: "easy",
+    venueType: "nightclub", venueScale: "small", venueCharacter: ["underground", "neighborhood"]
+  },
+  { 
+    id:"sep26", m:9, d:26, artist:"Silva Bumpa", venue:"Manhattan Boat Cruise", price:25, spentAlready:25, isPurchased:true, kind:"dj", local:true, def:"locked", 
+    ctx:"UKG on a Manhattan boat — one of the more distinctly summer-in-New-York nights left on the calendar.",
+    tags: ["club", "weird", "dj"], genreTags: ["electronic", "house"], energy: "high", setting: "boat", location: "Manhattan", specialness: "marquee", commitment: "medium",
+    venueType: "boat", venueScale: "mid-size", venueCharacter: ["unusual", "destination", "outdoor"]
+  },
+  { 
+    id:"sep27", m:9, d:27, artist:"Brothers Macklovitch", venue:"Refuge", price:15, kind:"dj", local:true, def:"gametime", 
+    ctx:"A-Trak + Dave 1 digging through disco, funk and house. At $15, an extremely easy Sunday wildcard.",
+    tags: ["club", "cheap", "dj"], genreTags: ["disco", "funk", "house"], energy: "high", setting: "club", location: "Brooklyn", specialness: "notable", commitment: "easy",
+    venueType: "bar", venueScale: "intimate", venueCharacter: ["neighborhood", "intimate", "dance-floor"]
+  },
+  { 
+    id:"oct02", m:10, d:2, artist:"Geese", venue:"Forest Hills Stadium", price:55, spentAlready:55, isPurchased:true, kind:"band", local:true, def:"locked", 
+    ctx:"Home-team rock show at Forest Hills — a bigger live-band counterweight to all the club nights.",
+    tags: ["band", "big-night", "curated"], genreTags: ["rock", "indie"], energy: "high", setting: "outdoor", location: "Queens", specialness: "marquee", commitment: "big",
+    venueType: "outdoor venue", venueScale: "large", venueCharacter: ["historic", "outdoor", "iconic"]
+  },
+  { 
+    id:"oct10", m:10, d:10, dEnd:11, artist:"Head Trip Festival", venue:"Indio, California", price:899, spentAlready:899, isPurchased:true, ashleyOnly:true, destinationTrip:true, kind:"fest", local:false, def:"locked", 
+    ctx:"Sun-drenched desert getaway with top-tier curation — the major West Coast trip of the fall.",
+    tags: ["big-night", "fest"], genreTags: ["electronic", "indie", "pop"], energy: "high", setting: "festival", location: "Destination", specialness: "marquee", commitment: "big",
+    venueType: "festival", venueScale: "festival-scale", venueCharacter: ["destination", "outdoor", "high-production"]
+  },
+  { 
+    id:"oct26", m:10, d:26, artist:"Mac DeMarco", venue:"Carnegie Hall", price:129, kind:"band", local:true, def:"choosing", 
+    ctx:"Mac at Carnegie Hall is the hook: familiar artist, unusually grand room, genuinely different kind of concert night.",
+    tags: ["band", "weird", "curated", "big-night"], genreTags: ["indie", "pop"], energy: "low", setting: "concert-hall", location: "Manhattan", specialness: "marquee", commitment: "big",
+    venueType: "concert hall", venueScale: "large", venueCharacter: ["historic", "polished", "iconic"]
+  },
+  
+
+  // Oct 30 Kaytranada at Pacha NYC
+  {
+    id: "oct30_kaytranada", m: 10, d: 30, artist: "Kaytranada", venue: "Pacha NYC", price: 200, kind: "dj", local: true, def: "choosing",
+    ctx: "A $200 marquee Kaytranada night at Pacha — major artist pull, major-night energy, and exactly the kind of dance-floor add that has to earn its place.",
+    tags: ["club", "big-night", "dj", "expensive", "marquee"], genreTags: ["house", "electronic", "funk", "dance"], energy: "high", setting: "club", location: "Manhattan", specialness: "marquee", commitment: "big",
+    venueType: "nightclub", venueScale: "large", venueCharacter: ["high-production", "iconic", "dance-floor"]
+  },
+
+    // Nov 6 Shared-Date Options (CHOOSE 1)
+  { 
+    id:"nov06a", m:11, d:6, artist:"Eli Escobar", venue:"House of Yes", price:0, kind:"dj", local:true, def:"choosing", group:"NOV6", 
+    ctx:"Free Eli at House of Yes: dependable NYC dance-floor option with almost zero commitment required.",
+    tags: ["club", "cheap", "dj"], genreTags: ["house", "disco"], energy: "high", setting: "club", location: "Brooklyn", specialness: "notable", commitment: "easy",
+    venueType: "nightclub", venueScale: "mid-size", venueCharacter: ["underground", "dance-floor", "iconic"]
+  },
+  { 
+    id:"nov06b", m:11, d:6, artist:"Volkoder", venue:"Chocolate Factory", price:null, kind:"dj", local:true, def:"choosing", group:"NOV6", 
+    ctx:"NY debut and an all-night set — the more club-forward, discovery-heavy option for November 6.",
+    tags: ["club", "big-night", "dj"], genreTags: ["house", "techno"], energy: "high", setting: "warehouse", location: "Brooklyn", specialness: "marquee", commitment: "big",
+    venueType: "warehouse", venueScale: "mid-size", venueCharacter: ["underground", "late-night", "industrial"]
+  },
+  { 
+    id:"nov06c", m:11, d:6, artist:"TOBIAHS", venue:"Brooklyn Steel", price:null, kind:"dj", local:true, def:"choosing", group:"NOV6", 
+    ctx:"Brooklyn Steel gives the rising electronic producer a much bigger-room test than the usual club setting.",
+    tags: ["big-night", "dj"], genreTags: ["electronic"], energy: "high", setting: "concert-hall", location: "Brooklyn", specialness: "notable", commitment: "medium",
+    venueType: "concert hall", venueScale: "mid-size", venueCharacter: ["polished", "iconic"]
+  },
+  
+  // Nov 21 Joshwa
+  { 
+    id:"nov21", m:11, d:21, artist:"JOSHWA", venue:"99 Scott", price:29, kind:"dj", local:true, def:"choosing", 
+    ctx:"Straightforward late-night house at 99 Scott — useful November option if the calendar still has room.",
+    tags: ["club", "weird", "dj"], genreTags: ["house", "electronic"], energy: "high", setting: "warehouse", location: "Brooklyn", specialness: "notable", commitment: "medium",
+    venueType: "warehouse", venueScale: "large", venueCharacter: ["underground", "late-night"]
+  },
+
+  { 
+    id:"rampa", m:null, d:null, artist:"Rampa b2b Martinez Bros", venue:"PACHA NYC", price:null, kind:"dj", local:true, def:"choosing", isRampa:true, 
+    ctx:"Potential Pacha heavyweight night — worth keeping on the radar until the date and price actually land.",
+    tags: ["club", "big-night", "dj"], genreTags: ["house", "electronic"], energy: "high", setting: "club", location: "Manhattan", specialness: "marquee", commitment: "big",
+    venueType: "nightclub", venueScale: "large", venueCharacter: ["high-production", "iconic"]
+  }
+];
+
+var PAST_EVENTS = [
+  { m:2, d:20, artist:"Franc Moody", venue:"Brooklyn Steel", price:33, kind:"band", venueType: "concert hall", venueScale: "mid-size", venueCharacter: ["polished", "iconic"] },
+  { m:3, d:28, artist:"Bradley Zero", venue:"Public Records", price:25, kind:"dj", venueType: "listening-room", venueScale: "intimate", venueCharacter: ["listening-room", "polished", "intimate"] },
+  { m:5, d:1, artist:"Benwal", venue:"Newspeak", price:30, kind:"dj", venueType: "nightclub", venueScale: "small", venueCharacter: ["underground", "dance-floor"] },
+  { m:5, d:21, artist:"Eli Escobar", venue:"Gabriela", price:0, kind:"dj", venueType: "bar", venueScale: "intimate", venueCharacter: ["neighborhood", "intimate"] },
+  { m:5, d:23, artist:"Gorgon City, Genesi, LINSKA", venue:"Industry City", price:72, kind:"dj", venueType: "outdoor venue", venueScale: "large", venueCharacter: ["outdoor", "high-production"] },
+  { m:5, d:29, artist:"James Blake", venue:"Brooklyn Paramount", price:150, kind:"band", venueType: "theater", venueScale: "mid-size", venueCharacter: ["historic", "polished", "iconic"] },
+  { m:7, d:1, artist:"Kokoroko", venue:"Central Park SummerStage", price:0, kind:"band", venueType: "outdoor venue", venueScale: "large", venueCharacter: ["outdoor", "historic", "iconic"] },
+  { m:7, d:11, artist:"STRYV", venue:"Sunset Park Rooftop", price:44, kind:"dj", venueType: "rooftop", venueScale: "mid-size", venueCharacter: ["rooftop", "outdoor", "destination"] },
+  { m:7, d:25, artist:"Adam Ten b2b Mita Gami", venue:"Industry City", price:45, kind:"dj", venueType: "outdoor venue", venueScale: "large", venueCharacter: ["outdoor", "high-production"] },
+  { 
+    m:8, d:7, dEnd:8, artist:"Outside Lands Festival", venue:"Golden Gate Park", price:800, kind:"fest",
+    isOSL: true,
+    venueType: "festival", venueScale: "festival-scale", venueCharacter: ["destination", "festival", "outdoor", "high-production"],
+    note: "Outside Lands ended up being primarily a bands / live-music festival for us, with electronic afters afterward.",
+    day1: [
+      { name: "Wet Leg", partial: false },
+      { name: "Tinashe", partial: false },
+      { name: "Geese", partial: false },
+      { name: "Labrinth", partial: false },
+      { name: "Charli xcx", partial: false }
+    ],
+    day2: [
+      { name: "Camoufly", partial: false },
+      { name: "Dijon", partial: false },
+      { name: "the xx", partial: false },
+      { name: "Yard Act", partial: true },
+      { name: "Ethel Cain", partial: true },
+      { name: "Rio Kosta DJ", partial: true }
+    ]
+  },
+  { m:8, d:7, artist:"OMNOM — OSL Afters", venue:"1015 Folsom", price:33, kind:"dj", venueType: "nightclub", venueScale: "large", venueCharacter: ["underground", "late-night", "iconic"] },
+  { m:8, d:8, artist:"Broken Hill b2b it's murph — OSL Afters", venue:"Audio", price:10, kind:"dj", venueType: "nightclub", venueScale: "small", venueCharacter: ["underground", "intimate"] },
+  { m:8, d:14, artist:"Yacht Rock Revue", venue:"Stone Pony Summer Stage", price:65, kind:"band", venueType: "outdoor venue", venueScale: "mid-size", venueCharacter: ["outdoor", "historic"], note: "Fun in a cheesy way." }
+];
+
+/* =========================================================
+   STATE ENGINE & STORAGE
+   ========================================================= */
+var STORAGE_KEY = "whats_the_move_2026_state_v20";
+
+var state = {
+  theme: "dark",
+  status: {},
+  attendance: {}, // id -> 'attended' | 'missed'
+  activeGroupTab: { "SEP04": "sep04c", "NOV6": "nov06a" },
+  channelTresSecond: { bought: false, price: null },
+  rampaDate: "",
+  customEvents: [],
+  activeVibeFilter: null // { vibeKey, recommendedIds: [...] }
+};
+
+function migrateStatus(val) {
+  if (STATUS[val]) return val;
+  if (LEGACY_STATUS_MAP[val]) return LEGACY_STATUS_MAP[val];
+  return "choosing";
+}
+
+function normalizeStr(str) {
+  return (str || "").trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function loadState(){
+  INITIAL_EVENTS.forEach(function(e){
+    if(e.genreTags && !e.venueType) {
+      inferEventMetadata(e);
+    }
+    state.status[e.id] = e.def;
+  });
+
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) {
+      var parsed = JSON.parse(raw);
+      if(parsed.theme) state.theme = parsed.theme;
+      if(parsed.activeGroupTab) Object.assign(state.activeGroupTab, parsed.activeGroupTab);
+      if(parsed.channelTresSecond) state.channelTresSecond = parsed.channelTresSecond;
+      if(parsed.rampaDate !== undefined) state.rampaDate = parsed.rampaDate;
+      if(parsed.attendance) Object.assign(state.attendance, parsed.attendance);
+      // Retire the removed Mark Ronson event from older saved versions.
+      delete state.status.mark_ronson;
+      delete state.attendance.mark_ronson;
+      if(parsed.customEvents && Array.isArray(parsed.customEvents)) {
+        var seenKeys = {};
+        var cleanedCustom = [];
+        parsed.customEvents.forEach(function(ev){
+          if(ev.id === "mark_ronson" || normalizeStr(ev.artist) === "mark ronson") return;
+          if(!ev.venueType) inferEventMetadata(ev);
+          var key = (ev.m || "") + "|" + (ev.d || "") + "|" + normalizeStr(ev.artist) + "|" + normalizeStr(ev.venue);
+          if(!seenKeys[key]) {
+            seenKeys[key] = true;
+            cleanedCustom.push(ev);
+          }
+        });
+        state.customEvents = cleanedCustom;
+      }
+
+      if(parsed.status) {
+        Object.keys(parsed.status).forEach(function(k){
+          if(k === "mark_ronson") return;
+          state.status[k] = migrateStatus(parsed.status[k]);
+        });
+      }
+      delete state.status.mark_ronson;
+      delete state.attendance.mark_ronson;
+    }
+  } catch(e){}
+}
+
+function saveState(){
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch(e){}
+}
+
+function inferEventMetadata(e) {
+  var artistL = (e.artist || "").toLowerCase();
+  var venueL = (e.venue || "").toLowerCase();
+  var kind = e.kind || "dj";
+
+  var genreTags = [];
+  var venueType = "nightclub";
+  var venueScale = "mid-size";
+  var venueCharacter = ["underground", "dance-floor"];
+  var setting = "club";
+  var location = "Brooklyn";
+  var energy = "high";
+  var specialness = "notable";
+  var commitment = "medium";
+
+  if (kind === "dj") {
+    genreTags.push("house", "electronic");
+    if (artistL.includes("disco") || artistL.includes("macklovitch") || artistL.includes("strauss")) genreTags.push("disco", "funk");
+    if (venueL.includes("boat")) { venueType = "boat"; venueCharacter = ["unusual", "destination", "outdoor"]; setting = "boat"; }
+    else if (venueL.includes("warehouse") || venueL.includes("scott") || venueL.includes("knockdown")) { venueType = "warehouse"; venueScale = "large"; venueCharacter = ["underground", "late-night"]; setting = "warehouse"; }
+    else if (venueL.includes("rooftop")) { venueType = "rooftop"; venueCharacter = ["rooftop", "outdoor"]; setting = "rooftop"; }
+    else { venueType = "nightclub"; venueCharacter = ["underground", "dance-floor", "iconic"]; setting = "club"; }
+  } else if (kind === "band") {
+    genreTags.push("indie", "rock");
+    if (venueL.includes("stadium")) { venueType = "outdoor venue"; venueScale = "large"; venueCharacter = ["outdoor", "historic", "iconic"]; setting = "outdoor"; energy = "high"; specialness = "marquee"; commitment = "big"; }
+    else if (venueL.includes("hall") || venueL.includes("carnegie")) { venueType = "concert hall"; venueScale = "large"; venueCharacter = ["historic", "polished", "iconic"]; setting = "concert-hall"; specialness = "marquee"; commitment = "big"; }
+    else if (venueL.includes("theater") || venueL.includes("paramount")) { venueType = "theater"; venueScale = "mid-size"; venueCharacter = ["historic", "polished"]; setting = "concert-hall"; specialness = "marquee"; commitment = "big"; }
+    else { venueType = "small live room"; venueScale = "small"; venueCharacter = ["neighborhood", "intimate", "DIY"]; setting = "small-room"; commitment = "easy"; }
+  } else if (kind === "fest") {
+    genreTags.push("electronic", "indie", "pop");
+    venueType = "festival";
+    venueScale = "festival-scale";
+    venueCharacter = ["destination", "festival", "outdoor", "high-production"];
+    setting = "festival";
+    location = "Destination";
+    energy = "high";
+    specialness = "marquee";
+    commitment = "big";
+  }
+
+  if (venueL.includes("manhattan")) location = "Manhattan";
+  else if (venueL.includes("queens") || venueL.includes("forest hills")) location = "Queens";
+  else if (venueL.includes("california") || venueL.includes("indio")) location = "Destination";
+
+  var priceVal = e.price;
+  if (priceVal === 0 || priceVal === "FREE") {
+    commitment = "easy";
+  } else if (typeof priceVal === "number" && priceVal >= 50) {
+    commitment = "big";
+  }
+
+  e.genreTags = e.genreTags || genreTags;
+  e.venueType = e.venueType || venueType;
+  e.venueScale = e.venueScale || venueScale;
+  e.venueCharacter = e.venueCharacter || venueCharacter;
+  e.setting = e.setting || setting;
+  e.location = e.location || location;
+  e.energy = e.energy || energy;
+  e.specialness = e.specialness || specialness;
+  e.commitment = e.commitment || commitment;
+  e.tags = e.tags || [kind, setting];
+}
+
+/* =========================================================
+   CALCULATION LOGIC & PACING ENGINE
+   ========================================================= */
+function getAllEvents(){
+  var combined = INITIAL_EVENTS.concat(state.customEvents);
+  return combined.map(function(e){
+    var copy = Object.assign({}, e);
+    if(copy.isRampa && state.rampaDate) {
+      var parts = state.rampaDate.split("-");
+      if(parts.length === 3) {
+        copy.m = parseInt(parts[1], 10);
+        copy.d = parseInt(parts[2], 10);
+      }
+    }
+    return copy;
+  });
+}
+
+function getAttendedExtraEvents() {
+  var evs = getAllEvents();
+  var attendedList = [];
+  evs.forEach(function(e){
+    if(e.m && e.d && isDatePast(e.m, e.d)) {
+      if(state.attendance[e.id] === 'attended') {
+        attendedList.push({
+          m: e.m,
+          d: e.d,
+          artist: e.artist,
+          venue: e.venue,
+          price: e.price,
+          kind: e.kind,
+          venueType: e.venueType,
+          venueScale: e.venueScale,
+          venueCharacter: e.venueCharacter,
+          note: e.ctx || "Attended show"
+        });
+      }
+    }
+  });
+  return attendedList;
+}
+
+function getCombinedPastEvents() {
+  var extra = getAttendedExtraEvents();
+  var allPast = PAST_EVENTS.concat(extra);
+  return allPast.sort(function(a, b){
+    if(a.m !== b.m) return a.m - b.m;
+    return a.d - b.d;
+  });
+}
+
+function getGroupedEventsMap(evList){
+  var map = [];
+  var seenGroups = {};
+
+  evList.forEach(function(e){
+    if(e.m && e.d && isDatePast(e.m, e.d)) return;
+
+    if(e.group) {
+      if(!seenGroups[e.group]) {
+        var groupItems = evList.filter(function(x){
+          return x.group === e.group && !(x.m && x.d && isDatePast(x.m, x.d));
+        });
+        if(groupItems.length > 0) {
+          seenGroups[e.group] = true;
+          map.push({ isGroup: true, groupId: e.group, m: e.m, d: e.d, items: groupItems });
+        }
+      }
+    } else {
+      map.push({ isGroup: false, item: e, m: e.m, d: e.d });
+    }
+  });
+
+  return map;
+}
+
+function sortNodesChronologically(nodes) {
+  return nodes.slice().sort(function(a, b) {
+    var am = a.m, ad = a.d;
+    var bm = b.m, bd = b.d;
+
+    if ((am === null || am === undefined) && (bm === null || bm === undefined)) return 0;
+    if (am === null || am === undefined) return 1;
+    if (bm === null || bm === undefined) return -1;
+
+    if (am !== bm) return am - bm;
+    return ad - bd;
+  });
+}
+
+function computePastTotals(){
+  var combinedPast = getCombinedPastEvents();
+  var pastSpent = 0;
+  var freeCount = 0;
+  var djCount = 0;
+  var bandCount = 0;
+  var festCount = 0;
+  var venues = {};
+  var venueTypes = {};
+
+  combinedPast.forEach(function(p){
+    pastSpent += (p.price || 0);
+    if(p.price === 0) freeCount++;
+    if(p.kind === "dj") djCount++;
+    if(p.kind === "band") bandCount++;
+    if(p.kind === "fest") festCount++;
+    if(p.venue) venues[p.venue] = true;
+    if(p.venueType) venueTypes[p.venueType] = (venueTypes[p.venueType] || 0) + 1;
+  });
+
+  return {
+    count: combinedPast.length,
+    pastSpent: pastSpent,
+    freeCount: freeCount,
+    djCount: djCount,
+    bandCount: bandCount,
+    festCount: festCount,
+    venueCount: Object.keys(venues).length,
+    venueTypes: venueTypes
+  };
+}
+
+function computeVenueDiversityScore(selectedEvents){
+  var combinedPast = getCombinedPastEvents();
+  var allVenues = {};
+  var allTypes = {};
+  var scaleCounts = { intimate: 0, small: 0, 'mid-size': 0, large: 0, 'festival-scale': 0 };
+
+  combinedPast.forEach(function(p){
+    if(p.venue) allVenues[p.venue] = true;
+    if(p.venueType) allTypes[p.venueType] = true;
+    if(p.venueScale && scaleCounts[p.venueScale] !== undefined) scaleCounts[p.venueScale]++;
+  });
+
+  selectedEvents.forEach(function(e){
+    if(e.venue) allVenues[e.venue] = true;
+    if(e.venueType) allTypes[e.venueType] = true;
+    if(e.venueScale && scaleCounts[e.venueScale] !== undefined) scaleCounts[e.venueScale]++;
+  });
+
+  var uniqueVenues = Object.keys(allVenues).length;
+  var uniqueTypes = Object.keys(allTypes).length;
+  var totalShows = combinedPast.length + selectedEvents.length;
+
+  var diversityScore = Math.min(10, Math.round((uniqueVenues * 0.4 + uniqueTypes * 1.2 + (scaleCounts.intimate + scaleCounts.large + scaleCounts['festival-scale']) * 0.5) / Math.max(1, totalShows * 0.3) * 5));
+  return Math.max(2, Math.min(10, diversityScore));
+}
+
+function computeStatsFromStatuses(){
+  var evs = getAllEvents();
+  var locked = 0, likely = 0, choosing = 0, gametime = 0, skip = 0;
+  var mapped = getGroupedEventsMap(evs);
+
+  mapped.forEach(function(node){
+    if(!node.isGroup) {
+      var e = node.item;
+      if(e.m && e.d && isDatePast(e.m, e.d)) return;
+      var st = state.status[e.id] || "choosing";
+
+      if(!e.ashleyOnly) {
+        if(st === "locked") locked++;
+        else if(st === "likely") likely++;
+        else if(st === "choosing") choosing++;
+        else if(st === "gametime") gametime++;
+        else if(st === "skip") skip++;
+      }
+    } else {
+      var activeId = state.activeGroupTab[node.groupId] || node.items[0].id;
+      var activeItem = node.items.find(function(x){ return x.id === activeId; }) || node.items[0];
+      if(activeItem.m && activeItem.d && isDatePast(activeItem.m, activeItem.d)) return;
+      var st = state.status[activeItem.id] || "choosing";
+
+      if(st === "locked") locked++;
+      else if(st === "likely") likely++;
+      else if(st === "choosing") choosing++;
+      else if(st === "gametime") gametime++;
+      else if(st === "skip") skip++;
+    }
+  });
+
+  return { locked: locked, likely: likely, choosing: choosing, gametime: gametime, skip: skip };
+}
+
+/* =========================================================
+   "WHAT THE CALENDAR NEEDS" ANALYSIS FUNCTIONS
+   ========================================================= */
+function getAssumedCalendarEvents() {
+  var evs = getAllEvents();
+  var assumed = [];
+  var mapped = getGroupedEventsMap(evs);
+
+  mapped.forEach(function(node){
+    if(!node.isGroup) {
+      var e = node.item;
+      if(e.m && e.d && isDatePast(e.m, e.d)) return;
+      var st = state.status[e.id] || "choosing";
+      if(st === "locked" || st === "likely") {
+        assumed.push(e);
+      }
+    } else {
+      var activeId = state.activeGroupTab[node.groupId] || node.items[0].id;
+      var activeItem = node.items.find(function(x){ return x.id === activeId; }) || node.items[0];
+      if(activeItem.m && activeItem.d && isDatePast(activeItem.m, activeItem.d)) return;
+      var st = state.status[activeItem.id] || "choosing";
+      if(st === "locked" || st === "likely") {
+        assumed.push(activeItem);
+      }
+    }
+  });
+  return assumed;
+}
+
+function getUnresolvedActionableEvents() {
+  var evs = getAllEvents();
+  var unresolved = [];
+  var mapped = getGroupedEventsMap(evs);
+
+  mapped.forEach(function(node){
+    if(!node.isGroup) {
+      var e = node.item;
+      if(e.m && e.d && isDatePast(e.m, e.d)) return;
+      var st = state.status[e.id] || "choosing";
+      if(st === "choosing" || st === "gametime") {
+        unresolved.push(e);
+      }
+    } else {
+      node.items.forEach(function(item){
+        if(item.m && item.d && isDatePast(item.m, item.d)) return;
+        var st = state.status[item.id] || "choosing";
+        if(st === "choosing" || st === "gametime") {
+          unresolved.push(item);
+        }
+      });
+    }
+  });
+  return unresolved;
+}
+
+function analyzeDanceFloorSaturation() {
+  var past = computePastTotals();
+  var assumed = getAssumedCalendarEvents();
+  
+  var djScore = past.djCount * 1.5 + past.festCount * 0.8;
+  assumed.forEach(function(e){
+    if(e.kind === "dj" || e.venueType === "nightclub" || e.venueType === "warehouse" || (e.genreTags && e.genreTags.includes("house"))) {
+      djScore += 2.0;
+    } else if(e.kind === "fest") {
+      djScore += 1.5;
+    }
+  });
+
+  var saturation = Math.min(100, Math.max(5, Math.round((djScore / 14) * 100)));
+  var stateName = "BALANCED";
+  var cssClass = "state-balanced";
+  var take = "Club and electronic nights have a healthy presence on the calendar.";
+  var rec = "";
+
+  if(saturation >= 85) {
+    stateName = "OVERLOADED";
+    cssClass = "state-overloaded";
+    take = "We have more than enough club and electronic nights scheduled.";
+    rec = "→ Another one needs to be special.";
+  } else if(saturation >= 65) {
+    stateName = "COVERED";
+    cssClass = "state-covered";
+    take = "Plenty of electronic and club energy already locked in.";
+    rec = "→ Only add something genuinely different.";
+  } else if(saturation >= 40) {
+    stateName = "BALANCED";
+    cssClass = "state-balanced";
+    take = "Dance floor nights are evenly paced with the rest of the year.";
+  } else if(saturation >= 20) {
+    stateName = "ROOM FOR MORE";
+    cssClass = "state-room-more";
+    take = "The fall calendar has room for more club and electronic nights.";
+    var unresolved = getUnresolvedActionableEvents();
+    var djUnres = unresolved.find(function(x){ return x.kind === "dj"; });
+    if(djUnres) {
+      rec = "→ " + djUnres.artist + " would fit nicely.";
+    } else {
+      rec = "→ Look for a solid late-night booking.";
+    }
+  } else {
+    stateName = "NEEDS HELP";
+    cssClass = "state-needs-help";
+    take = "Dance floor energy is currently sparse on the calendar.";
+    rec = "→ Time to lock in a proper club night.";
+  }
+
+  return { saturation: saturation, stateName: stateName, cssClass: cssClass, take: take, rec: rec };
+}
+
+function analyzeLiveMusicSaturation() {
+  var past = computePastTotals();
+  var assumed = getAssumedCalendarEvents();
+
+  var bandScore = past.bandCount * 1.5 + past.festCount * 0.5;
+  assumed.forEach(function(e){
+    if(e.kind === "band" || e.venueType === "concert hall" || e.venueType === "small live room" || e.venueType === "theater") {
+      bandScore += 2.0;
+    }
+  });
+
+  var saturation = Math.min(100, Math.max(5, Math.round((bandScore / 10) * 100)));
+  var stateName = "ROOM FOR MORE";
+  var cssClass = "state-room-more";
+  var take = "Bands and live instrumental sets still trail the electronic side.";
+  var rec = "";
+
+  if(saturation >= 80) {
+    stateName = "OVERLOADED";
+    cssClass = "state-overloaded";
+    take = "Live music and concert rooms are dominating the calendar.";
+    rec = "→ Don't add a band just for balance.";
+  } else if(saturation >= 60) {
+    stateName = "COVERED";
+    cssClass = "state-covered";
+    take = "Live music is well-represented across the fall lineup.";
+  } else if(saturation >= 35) {
+    stateName = "BALANCED";
+    cssClass = "state-balanced";
+    take = "Live acts and club nights are sharing the calendar evenly.";
+  } else {
+    stateName = "ROOM FOR MORE";
+    cssClass = "state-room-more";
+    take = "Bands and live concert rooms are currently taking a backseat.";
+    var unresolved = getUnresolvedActionableEvents();
+    var bandUnres = unresolved.find(function(x){ return x.kind === "band"; });
+    if(bandUnres) {
+      rec = "→ " + bandUnres.artist + " would help.";
+    } else {
+      rec = "→ A strong live show would improve the mix.";
+    }
+  }
+
+  return { saturation: saturation, stateName: stateName, cssClass: cssClass, take: take, rec: rec };
+}
+
+function analyzeExperienceVariety() {
+  var assumed = getAssumedCalendarEvents();
+  var diversity = computeVenueDiversityScore(assumed);
+  
+  var varietyScore = diversity * 10;
+  var saturation = Math.min(100, Math.max(15, varietyScore));
+
+  var stateName = "BALANCED";
+  var cssClass = "state-balanced";
+  var take = "Venues, room types, and formats are keeping scenery varied.";
+  var rec = "→ Protect the range.";
+
+  if(saturation >= 80) {
+    stateName = "COVERED";
+    cssClass = "state-covered";
+    take = "Exceptional room variety across boats, concert halls, warehouses and clubs.";
+    rec = "→ The remaining calendar has plenty of range.";
+  } else if(saturation >= 50) {
+    stateName = "BALANCED";
+    cssClass = "state-balanced";
+    take = "Clubs, festivals, small rooms and bigger stages keep changing the scenery.";
+    rec = "→ Protect the range.";
+  } else {
+    stateName = "ROOM FOR MORE";
+    cssClass = "state-room-more";
+    take = "The remaining nights are starting to look like the same room repeatedly.";
+    var unresolved = getUnresolvedActionableEvents();
+    var weirdUnres = unresolved.find(function(x){ return x.venueType === "concert hall" || x.venueType === "boat" || x.venueType === "rooftop"; });
+    if(weirdUnres) {
+      rec = "→ " + weirdUnres.artist + " at " + weirdUnres.venue + " adds something genuinely different.";
+    } else {
+      rec = "→ Mix in a different venue type.";
+    }
+  }
+
+  return { saturation: saturation, stateName: stateName, cssClass: cssClass, take: take, rec: rec };
+}
+
+function computeDamageAndVibe(){
+  var evs = getAllEvents();
+  var selectedSharedEvs = [];
+  var isHeadTripSelected = false;
+
+  var pastTotals = computePastTotals();
+  var stats = computeStatsFromStatuses();
+  var mapped = getGroupedEventsMap(evs);
+
+  mapped.forEach(function(node){
+    if(!node.isGroup) {
+      var e = node.item;
+      if(e.m && e.d && isDatePast(e.m, e.d)) return;
+      var st = state.status[e.id] || "choosing";
+      if(e.ashleyOnly) {
+        if(st === "locked" || st === "likely" || st === "choosing" || st === "gametime") isHeadTripSelected = true;
+      } else {
+        if(st === "locked" || st === "likely" || st === "choosing" || st === "gametime") selectedSharedEvs.push(e);
+      }
+    } else {
+      var activeId = state.activeGroupTab[node.groupId] || node.items[0].id;
+      var activeItem = node.items.find(function(x){ return x.id === activeId; }) || node.items[0];
+      if(activeItem.m && activeItem.d && isDatePast(activeItem.m, activeItem.d)) return;
+      var st = state.status[activeItem.id] || "choosing";
+      if(st === "locked" || st === "likely" || st === "choosing" || st === "gametime") selectedSharedEvs.push(activeItem);
+    }
+  });
+
+  var genres = { dj: pastTotals.djCount, band: pastTotals.bandCount, fest: pastTotals.festCount };
+  selectedSharedEvs.forEach(function(e){ if(genres[e.kind] !== undefined) genres[e.kind]++; });
+
+  var diversity = computeVenueDiversityScore(selectedSharedEvs);
+  var vibe = calculateFullYearVibe(selectedSharedEvs, genres, isHeadTripSelected, diversity);
+
+  var dfAnalysis = analyzeDanceFloorSaturation();
+  var lmAnalysis = analyzeLiveMusicSaturation();
+  var evAnalysis = analyzeExperienceVariety();
+
+  var editorialLine = generateNaturalEditorialObservation(selectedSharedEvs, pastTotals, diversity);
+
+  return {
+    vibe: vibe,
+    df: dfAnalysis,
+    lm: lmAnalysis,
+    ev: evAnalysis,
+    editorialLine: editorialLine
+  };
+}
+
+function generateNaturalEditorialObservation(selectedEvents, pastTotals, diversity) {
+  var venueTypes = Object.assign({}, pastTotals.venueTypes);
+  selectedEvents.forEach(function(e){
+    if(e.venueType) venueTypes[e.venueType] = (venueTypes[e.venueType] || 0) + 1;
+  });
+
+  var totalClubs = (venueTypes['nightclub'] || 0) + (venueTypes['warehouse'] || 0);
+  var totalOutdoor = (venueTypes['outdoor venue'] || 0) + (venueTypes['festival'] || 0) + (venueTypes['rooftop'] || 0) + (venueTypes['boat'] || 0);
+  var totalIntimate = (venueTypes['small live room'] || 0) + (venueTypes['listening-room'] || 0) + (venueTypes['bar'] || 0);
+
+  var pool = [];
+
+  if (diversity >= 8) {
+    pool.push("The lineup had range, but so did the rooms — clubs, festivals, outdoor stages and intimate spaces kept 2026 from ever feeling like the same night twice.");
+  }
+  if (totalClubs >= 10) {
+    pool.push("We spent a suspicious percentage of 2026 in dark rooms with good sound systems.");
+  }
+  if (totalIntimate >= 4) {
+    pool.push("2026 was less about giant stages and more about being close enough to actually see what was happening.");
+  }
+  if (totalOutdoor >= 5) {
+    pool.push("Outdoor stages and destination-scale weekends made the summer feel much bigger than the club calendar alone.");
+  }
+  
+  pool.push("The music bounced around across an impeccably curated room tour.");
+  pool.push("From intimate bars to monumental concert halls, the spatial pacing of 2026 remained remarkably sharp.");
+  pool.push("An expertly balanced calibration between underground club nights and landmark live performances.");
+
+  var hash = diversity + pastTotals.count;
+  return pool[hash % pool.length];
+}
+
+function calculateFullYearVibe(selectedSharedEvs, genres, isHeadTripSelected, diversity){
+  var totalSelected = selectedSharedEvs.length;
+  var dj = genres.dj || 0;
+  var band = genres.band || 0;
+
+  var vibeOptions = [
+    {
+      title: "BROOKLYN CLUB RAT WITH RANGE",
+      desc: "A heavy electronic year, but the venues provided endless scenery: from Public Records and 99 Scott to Forest Hills Stadium and Carnegie Hall."
+    },
+    {
+      title: "THE WELL-CURATED ROOM TOUR",
+      desc: "Outside Lands, rooftop parties, boat cruises and intimate fall listening rooms make 2026 feel rich and complete without burning out."
+    },
+    {
+      title: "THE FULL ROOM SEND",
+      desc: "A heavy spring and summer give way to an uncompromising fall across major halls, warehouses, and small rooms."
+    },
+    {
+      title: "SURPRISINGLY ROOM-RESPONSIBLE",
+      desc: "After festival stages and massive sound systems, thoughtful acoustic spaces and small rooms settle in for the finish."
+    },
+    {
+      title: "BASS BY NIGHT, ROOM BY ROOM",
+      desc: "Rooftops, warehouses, boats, and late-night clubs define the spatial identity of the year."
+    },
+    {
+      title: "LIVE MUSIC ROOM PURIST",
+      desc: "From Central Park SummerStage to Carnegie Hall and Forest Hills Stadium, live instruments commanded grand acoustic spaces."
+    },
+    {
+      title: "THE FALL SPATIAL SECOND WIND",
+      desc: "A sprawling summer transitions into a meticulously curated autumn across secret club bookings and historic halls."
+    },
+    {
+      title: "NO TWO ROOMS THE SAME",
+      desc: "From boat cruises and warehouse takeovers to grand acoustic halls, the 2026 calendar prioritized space fluidity above all else."
+    }
+  ];
+
+  var index = (totalSelected + dj + band + diversity) % vibeOptions.length;
+  return vibeOptions[index];
+}
+
+/* =========================================================
+   UI RENDERING FUNCTIONS
+   ========================================================= */
+function renderTheme(){
+  document.documentElement.setAttribute("data-theme", state.theme);
+  var btn = document.getElementById("theme-btn");
+  if (state.theme === "dark") {
+    btn.textContent = "☾ DARK";
+    btn.setAttribute("aria-label", "Switch to light mode");
+  } else {
+    btn.textContent = "☀ LIGHT";
+    btn.setAttribute("aria-label", "Switch to dark mode");
+  }
+}
+
+function renderRestTab(){
+  renderActiveVibeBanner();
+
+  var evs = getAllEvents();
+  var mapped = getGroupedEventsMap(evs);
+  
+  mapped = sortNodesChronologically(mapped);
+
+  var html = "";
+
+  mapped.forEach(function(node){
+    if(!node.isGroup) {
+      html += renderSingleEventCard(node.item);
+    } else {
+      html += renderGroupedEventCard(node);
+    }
+  });
+
+  document.getElementById("restEventsList").innerHTML = html;
+  renderDamageSection();
+}
+
+function renderActiveVibeBanner(){
+  var container = document.getElementById("activeVibeBannerContainer");
+  if(!state.activeVibeFilter) {
+    container.innerHTML = "";
+    return;
+  }
+
+  var vibeObj = ALL_VIBES_LIBRARY.find(function(v){ return v.key === state.activeVibeFilter.vibeKey; });
+  var vibeTitle = vibeObj ? vibeObj.title : "VIBE ROUTE";
+
+  container.innerHTML = `
+    <div class="active-vibe-banner">
+      <span>⚡ SHOWING HITS FOR: ${vibeTitle}</span>
+      <button type="button" class="btn-clear-vibe" id="btnClearVibe">CLEAR VIBE</button>
+    </div>
+  `;
+}
+
+function generateSitesTake(e, stats, allEventsList) {
+  var st = state.status[e.id] || "choosing";
+  if(st === "locked" || st === "likely") return "";
+
+  var kind = e.kind;
+  var venueType = e.venueType;
+  var price = e.price;
+
+  if(price === 0 || price === "FREE") {
+    return "SITE’S TAKE: LOW RISK, HIGH UPSIDE.";
+  }
+  if(venueType === "boat" || venueType === "rooftop" || venueCharacterHas(e, "unusual")) {
+    return "SITE’S TAKE: THE ROOM MAKES THIS MORE INTERESTING.";
+  }
+  if(kind === "band") {
+    return "SITE’S TAKE: THE CALENDAR COULD USE THIS BAND.";
+  }
+  if(kind === "dj" && (venueType === "nightclub" || venueType === "warehouse")) {
+    return "SITE’S TAKE: WE HAVE ENOUGH CLUB NIGHTS — UNLESS THIS ONE REALLY WINS.";
+  }
+  if(e.specialness === "marquee" || e.venueScale === "large") {
+    return "SITE’S TAKE: THIS IS THE ONE TO KEEP IF WE CUT ELSEWHERE.";
+  }
+  return "SITE’S TAKE: WAIT AND SEE WHAT THE WEEKEND LOOKS LIKE.";
+}
+
+function venueCharacterHas(e, tag) {
+  return e.venueCharacter && e.venueCharacter.includes(tag);
+}
+
+function formatPriceDisplay(priceVal) {
+  if (priceVal === null || priceVal === undefined || priceVal === "" || priceVal === "TBD") return "Price TBD";
+  if (priceVal === 0 || String(priceVal).toUpperCase() === "FREE") return "FREE";
+  if (typeof priceVal === "number") return "$" + priceVal;
+  if (String(priceVal).startsWith("$")) return priceVal;
+  return "$" + priceVal;
+}
+
+function renderSingleEventCard(e){
+  var isPast = e.m && e.d && isDatePast(e.m, e.d);
+  var attendanceState = state.attendance[e.id];
+
+  if(isPast && attendanceState !== 'attended' && attendanceState !== 'missed') {
+    return `
+      <div class="event-card" data-evcardid="${e.id}" style="border-color: var(--hot-pink);">
+        <div class="event-header">
+          <div>
+            <span class="event-date">${e.m}/${e.d} (PASSED)</span>
+            <div class="event-title">${e.artist}</div>
+            <div class="event-venue">${e.venue}</div>
+          </div>
+          <span class="tag-badge choose">DID WE GO?</span>
+        </div>
+        <div class="attendance-prompt">
+          <span class="prompt-text">Did we attend ${e.artist} at ${e.venue}?</span>
+          <div class="attendance-btns">
+            <button type="button" class="btn-att btn-att-yes" data-attend-id="${e.id}" data-attend-val="attended">[ YES ]</button>
+            <button type="button" class="btn-att btn-att-no" data-attend-id="${e.id}" data-attend-val="missed">[ NO ]</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  var st = state.status[e.id] || "choosing";
+  var isSkip = (st === "skip");
+  
+  var isHighlighted = false;
+  if(state.activeVibeFilter && state.activeVibeFilter.recommendedIds && state.activeVibeFilter.recommendedIds.includes(e.id)) {
+    isHighlighted = true;
+  }
+
+  var sitesTakeHtml = "";
+  if(st === "choosing" || st === "gametime" || st === "skip") {
+    var takeMsg = generateSitesTake(e, null, null);
+    if(takeMsg) {
+      sitesTakeHtml = `<div class="sites-take-badge">${takeMsg}</div>`;
+    }
+  }
+
+  return `
+    <div class="event-card ${isSkip ? 'skip-state' : ''} ${isHighlighted ? 'vibe-highlighted' : ''}" data-evcardid="${e.id}">
+      <div class="event-header">
+        <div>
+          <span class="event-date">${e.m && e.d ? e.m + '/' + e.d : 'DATE TBD'}</span>
+          <div class="event-title">${e.artist}</div>
+          <div class="event-venue">${e.venue} ${e.venueType ? '<span style="font-size:11px; font-weight:400; color:var(--ink-muted);">(' + e.venueType + ')</span>' : ''}</div>
+        </div>
+        <div style="display:flex; gap:4px; flex-direction:column; align-items:flex-end;">
+          <span class="tag-badge ${e.kind}">${e.kind}</span>
+          ${isHighlighted ? '<span class="tag-badge" style="background:var(--hot-pink); color:#fff;">⚡ VIBE PICK</span>' : ''}
+        </div>
+      </div>
+      ${e.ctx ? `<div style="font-size:12px; color:var(--ink-muted); margin-top:4px;">${e.ctx}</div>` : ''}
+
+      ${sitesTakeHtml}
+
+      <div class="event-actions">
+        <div style="font-family:var(--font-mono); font-size:12px; font-weight:700;">
+          ${formatPriceDisplay(e.price)}
+        </div>
+        <div>
+          <select class="status-select st-${st}" data-evstatus="${e.id}">
+            ${Object.keys(STATUS).map(function(k){
+              return `<option value="${k}" ${k === st ? 'selected' : ''}>${STATUS[k].label}</option>`;
+            }).join('')}
+          </select>
+        </div>
+      </div>
+
+      ${e.isRampa ? renderRampaControls() : ''}
+      ${e.isCustom ? `
+        <div class="custom-card-controls">
+          <button type="button" class="btn-text-action btn-edit-custom" data-id="${e.id}">Edit Show</button>
+          <span>&bull;</span>
+          <button type="button" class="btn-text-action btn-delete-custom" data-id="${e.id}">Remove</button>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function renderGroupedEventCard(node){
+  var activeId = state.activeGroupTab[node.groupId] || node.items[0].id;
+  var activeItem = node.items.find(function(x){ return x.id === activeId; }) || node.items[0];
+
+  var isPast = node.m && node.d && isDatePast(node.m, node.d);
+  if(isPast) {
+    var attendanceState = state.attendance[activeItem.id];
+    if(attendanceState !== 'attended' && attendanceState !== 'missed') {
+      return `
+        <div class="date-group-card" style="border-color: var(--hot-pink);">
+          <div class="date-group-header">
+            <span class="date-group-label">${node.m}/${node.d} &bull; PASSED CHOICE</span>
+            <span class="tag-badge choose">DID WE GO?</span>
+          </div>
+          <div style="font-family:var(--font-display); font-size:17px; margin-bottom:4px;">${activeItem.artist}</div>
+          <div style="font-family:var(--font-subhead); font-weight:700; font-size:13px; color:var(--ink-muted); margin-bottom:8px;">${activeItem.venue}</div>
+          <div class="attendance-prompt">
+            <span class="prompt-text">Did we attend ${activeItem.artist}?</span>
+            <div class="attendance-btns">
+              <button type="button" class="btn-att btn-att-yes" data-attend-id="${activeItem.id}" data-attend-val="attended">[ YES ]</button>
+              <button type="button" class="btn-att btn-att-no" data-attend-id="${activeItem.id}" data-attend-val="missed">[ NO ]</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  var st = state.status[activeItem.id] || "choosing";
+  var isSkip = (st === "skip");
+
+  var isHighlighted = false;
+  if(state.activeVibeFilter && state.activeVibeFilter.recommendedIds && state.activeVibeFilter.recommendedIds.includes(activeItem.id)) {
+    isHighlighted = true;
+  }
+
+  var sitesTakeHtml = "";
+  if(st === "choosing" || st === "gametime" || st === "skip") {
+    var takeMsg = generateSitesTake(activeItem, null, null);
+    if(takeMsg) {
+      sitesTakeHtml = `<div class="sites-take-badge">${takeMsg}</div>`;
+    }
+  }
+
+  return `
+    <div class="date-group-card ${isSkip ? 'skip-state' : ''} ${isHighlighted ? 'vibe-highlighted' : ''}" data-groupid="${node.groupId}">
+      <div class="date-group-header">
+        <span class="date-group-label">${node.m}/${node.d} &bull; COMPETING CHOICE</span>
+        <div style="display:flex; gap:4px; align-items:center;">
+          ${isHighlighted ? '<span class="tag-badge" style="background:var(--hot-pink); color:#fff;">⚡ VIBE PICK</span>' : ''}
+          <span class="tag-badge choose">CHOOSE 1</span>
+        </div>
+      </div>
+      
+      <div class="segmented-tabs" data-groupid="${node.groupId}">
+        ${node.items.map(function(item){
+          var isAct = (item.id === activeItem.id);
+          var tabLabel = item.id.startsWith("sep04") ? 
+            (item.id === "sep04a" ? "ELI ESCOBAR" : (item.id === "sep04b" ? "MOBLACK" : "JUSTIN STRAUSS")) : 
+            item.artist;
+          return `<button class="seg-tab ${isAct?'active':''}" data-tabitemid="${item.id}">${tabLabel}</button>`;
+        }).join('')}
+      </div>
+
+      <div class="event-header">
+        <div>
+          <div class="event-title">${activeItem.artist}</div>
+          <div class="event-venue">${activeItem.venue} ${activeItem.venueType ? '<span style="font-size:11px; font-weight:400; color:var(--ink-muted);">(' + activeItem.venueType + ')</span>' : ''}</div>
+        </div>
+        <span class="tag-badge ${activeItem.kind}">${activeItem.kind}</span>
+      </div>
+      
+      ${activeItem.ctx ? `<div style="font-size:12px; color:var(--ink-muted); margin-top:4px;">${activeItem.ctx}</div>` : ''}
+
+      ${sitesTakeHtml}
+
+      <div class="event-actions">
+        <div style="font-family:var(--font-mono); font-size:12px; font-weight:700;">
+          ${formatPriceDisplay(activeItem.price)}
+        </div>
+        <div>
+          <select class="status-select st-${st}" data-evstatus="${activeItem.id}" data-isgrouped="true" data-groupid="${node.groupId}">
+            ${Object.keys(STATUS).map(function(k){
+              return `<option value="${k}" ${k === st ? 'selected' : ''}>${STATUS[k].label}</option>`;
+            }).join('')}
+          </select>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderRampaControls(){
+  return `
+    <div class="inline-input-box">
+      <span>Announced Date:</span>
+      <input type="date" id="rampaDateInput" value="${state.rampaDate || ''}">
+    </div>
+  `;
+}
+
+/* =========================================================
+   EXTENDED EXPANDED VIBE LIBRARY WITH VENUE INTELLIGENCE
+   ========================================================= */
+var ALL_VIBES_LIBRARY = [
+  {
+    key: "brooklyn_club_rat",
+    title: "BROOKLYN CLUB RAT",
+    tagline: "House, disco, DJs, small rooms, late nights, boats, warehouse energy.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (st === "locked") s += 25;
+      else if (st === "likely") s += 20;
+      else if (st === "choosing") s += 10;
+      if (e.kind === "dj" || (e.genreTags && (e.genreTags.includes("house") || e.genreTags.includes("techno") || e.genreTags.includes("disco")))) s += 25;
+      if (e.venueType === "nightclub" || e.venueType === "warehouse" || e.venueType === "listening-room" || e.venueType === "bar") s += 25;
+      if (e.location === "Brooklyn") s += 15;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 60; }
+  },
+  {
+    key: "bands",
+    title: "GIVE ME SOME BANDS",
+    tagline: "Prioritize actual live instrumentation after a DJ-heavy year.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (st === "locked") s += 25;
+      else if (st === "likely") s += 20;
+      else if (st === "choosing") s += 10;
+      if (e.kind === "band" || (e.venueType === "concert hall" || e.venueType === "small live room" || e.venueType === "theater")) s += 45;
+      if (e.kind === "dj") s -= 20;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 55; }
+  },
+  {
+    key: "quality_over_quantity",
+    title: "QUALITY OVER QUANTITY",
+    tagline: "Pick only the remaining shows with the strongest 'we will actually remember this' potential.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (e.specialness === "marquee" || st === "locked") s += 40;
+      if (e.venueCharacter && (e.venueCharacter.includes("iconic") || e.venueCharacter.includes("historic") || e.venueCharacter.includes("unusual"))) s += 30;
+      if (e.commitment === "big") s += 15;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 50; }
+  },
+  {
+    key: "cheap_thrills",
+    title: "CHEAP THRILLS",
+    tagline: "Maximum fun with minimal financial consequences.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (st === "choosing" || st === "gametime") s += 15;
+      var p = e.price;
+      if (p === 0 || p === "FREE") s += 50;
+      else if (typeof p === 'number' && p <= 25) s += 35;
+      else if (typeof p === 'number' && p <= 50) s += 10;
+      else s -= 25;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 50; }
+  },
+  {
+    key: "keep_it_weird",
+    title: "KEEP IT WEIRD",
+    tagline: "The room should be part of the story.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (e.venueType === "boat" || e.venueType === "rooftop" || e.venueType === "warehouse" || e.venueType === "bar") s += 45;
+      if (e.venueCharacter && (e.venueCharacter.includes("unusual") || e.venueCharacter.includes("intimate"))) s += 35;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 45; }
+  },
+  {
+    key: "dance_floor_december",
+    title: "DANCE FLOOR TIL DECEMBER",
+    tagline: "No course correction. Finish what we started.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (e.kind === "dj" || e.venueType === "nightclub" || e.venueType === "bar") s += 45;
+      if (e.energy === "high") s += 20;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 45; }
+  },
+  {
+    key: "one_more_big_one",
+    title: "ONE MORE BIG ONE",
+    tagline: "One headline night. Everything else is gravy.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (e.specialness === "marquee" || e.venueScale === "large" || e.commitment === "big") s += 50;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 40; }
+  },
+  {
+    key: "no_two_nights",
+    title: "NO TWO ROOMS THE SAME",
+    tagline: "Make the venues as varied as the lineup.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 10;
+      if (e.venueScale === "large" || e.venueType === "boat" || e.venueType === "concert hall" || e.venueType === "outdoor venue") s += 40;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 55; }
+  },
+  {
+    key: "small_room_supremacy",
+    title: "SMALL ROOM SUPREMACY",
+    tagline: "Forget production value. Get close enough to see the cables.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (e.venueScale === "intimate" || e.venueScale === "small") s += 50;
+      if (e.venueType === "small live room" || e.venueType === "bar" || e.venueType === "listening-room") s += 30;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 48; }
+  },
+  {
+    key: "warehouse_mode",
+    title: "WAREHOUSE MODE",
+    tagline: "Concrete floors. Questionable cell service. Correct.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (e.venueType === "warehouse") s += 60;
+      if (e.venueCharacter && e.venueCharacter.includes("industrial")) s += 30;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 42; }
+  },
+  {
+    key: "iconic_rooms",
+    title: "ICONIC ROOMS",
+    tagline: "Go because the artist is good. Remember it because of where you saw them.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (e.venueCharacter && (e.venueCharacter.includes("iconic") || e.venueCharacter.includes("historic"))) s += 55;
+      if (e.venueType === "concert hall" || e.venueType === "theater" || e.venueType === "outdoor venue") s += 25;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 46; }
+  },
+  {
+    key: "get_outside",
+    title: "GET OUTSIDE",
+    tagline: "We have enough ceilings.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (e.venueType === "outdoor venue" || e.venueType === "festival" || e.venueType === "rooftop" || e.venueType === "boat") s += 55;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 40; }
+  },
+  {
+    key: "back_underground",
+    title: "BACK UNDERGROUND",
+    tagline: "Enough stages. Find a dark room.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (e.venueCharacter && e.venueCharacter.includes("underground")) s += 50;
+      if (e.venueType === "nightclub" || e.venueType === "warehouse") s += 30;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 45; }
+  },
+  {
+    key: "destination_night",
+    title: "DESTINATION NIGHT",
+    tagline: "Make one show feel like the whole night.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 0;
+      if (e.venueCharacter && e.venueCharacter.includes("destination")) s += 55;
+      if (e.commitment === "big") s += 25;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 38; }
+  },
+  {
+    key: "neighborhood_tour",
+    title: "NEIGHBORHOOD TOUR",
+    tagline: "Apparently we're seeing the city one sound system at a time.",
+    scoreFn: function(e, st) {
+      if (st === "skip") return -100;
+      var s = 25;
+      if (e.location === "Brooklyn" || e.location === "Queens" || e.location === "Manhattan") s += 30;
+      return s;
+    },
+    relevanceFn: function(stats, evs) { return 35; }
+  }
+];
+
+function getDynamicSurpriseExplanation(vibeKey, topItem) {
+  var explanations = {
+    brooklyn_club_rat: [
+      "Apparently we're club rats in iconic Brooklyn rooms. Accept it.",
+      "Your year already has the headliners. Finish in the small club spaces.",
+      "Enough hesitation — time to lock in the Brooklyn dance floor room."
+    ],
+    bands: [
+      "The calendar needs guitars in proper live rooms.",
+      "Outside Lands handled the festival scale. Time for intimate stage rooms.",
+      "A much-needed live music room correction for the rest of 2026."
+    ],
+    small_room_supremacy: [
+      "Get close enough to the stage that venue size stops mattering.",
+      "Small room supremacy: ditch the giant stage and feel the sound.",
+      "Intimate spaces give the calendar a much-needed grounding."
+    ],
+    warehouse_mode: [
+      "Concrete floors and industrial sound systems: correct.",
+      "Warehouse mode activated for the fall home stretch.",
+      "Nothing beats a proper warehouse room at 2 AM."
+    ],
+    iconic_rooms: [
+      "Remember the show, but never forget the historic room.",
+      "Carnegie Hall and Forest Hills prove the venue matters as much as the set.",
+      "Elevate the calendar with an iconic room."
+    ],
+    get_outside: [
+      "We have enough ceilings — take the party outdoors.",
+      "Fresh air and open-air stages to finish out 2026.",
+      "Boats, rooftops, and outdoor venues for the win."
+    ],
+    quality_over_quantity: [
+      "One monumental room beats four nights you only kind of wanted.",
+      "This is the version of fall with the finest acoustic architecture.",
+      "Quality over quantity in a room you'll actually remember."
+    ],
+    cheap_thrills: [
+      "Cheap local rooms and zero door cover feels correct.",
+      "Maximum fun in neighborhood bars with minimal financial consequences.",
+      "Your 2am self approves of this local room."
+    ],
+    keep_it_weird: [
+      "Boats and rooftops make the venue part of the story.",
+      "Your calendar has enough conventional clubs. Add a spatial curveball.",
+      "This keeps the room architecture delightfully unpredictable."
+    ],
+    dance_floor_december: [
+      "No room course correction. Finish what we started on club floors.",
+      "Four-on-the-floor sound systems all the way to December.",
+      "Zero ceilings guaranteed."
+    ],
+    one_more_big_one: [
+      "One grand headline room. Everything else is gravy.",
+      "Anchor the rest of the year around one monumental venue.",
+      "Keep it simple with one massive room."
+    ],
+    no_two_nights: [
+      "Make the venues as varied as the lineup.",
+      "Build a spatial sampler across concert halls, boats, and clubs.",
+      "Maximum room diversity for maximum 2026 impact."
+    ]
+  };
+
+  var fallback = [
+    "This version of fall pairs the artist with the exact right room.",
+    "Your calendar is begging for this spatial pivot.",
+    "This fixes the venue variety balance for the rest of 2026."
+  ];
+
+  var list = explanations[vibeKey] || fallback;
+  var hash = 0;
+  if(topItem && topItem.id) {
+    for(var i=0; i<topItem.id.length; i++) {
+      hash += topItem.id.charCodeAt(i);
+    }
+  } else {
+    hash = Math.floor(Math.random() * 100);
+  }
+  return list[hash % list.length];
+}
+
+function getEditorialTag(vibeKey, topItem, stats) {
+  var pool = [
+    "YOU'RE ALREADY HALFWAY THERE",
+    "THIS WOULD CHANGE THE FALL",
+    "YOUR CALENDAR IS BEGGING FOR THIS",
+    "ONE OR TOO MORE WOULD DO IT",
+    "THIS FILLS THE GAP",
+    "THIS IS THE EASY YES",
+    "LOW RISK, HIGH UPSIDE",
+    "THIS KEEPS THINGS BALANCED"
+  ];
+
+  if (vibeKey === "cheap_thrills" || vibeKey === "spontaneous_mode") {
+    pool = ["LOW RISK, HIGH UPSIDE", "THE CHEAP SEATS ARE CALLING", "THIS IS THE EASY YES", "YOUR 2AM SELF APPROVES"];
+  } else if (vibeKey === "one_more_big_one" || vibeKey === "quality_over_quantity" || vibeKey === "iconic_rooms") {
+    pool = ["ONE GREAT ROOM > THREE FILLER NIGHTS", "THIS WOULD CHANGE THE FALL", "MAIN CHARACTER ENERGY"];
+  } else if (vibeKey === "bands" || vibeKey === "small_room_supremacy") {
+    pool = ["YOU CLEARLY HAVE A TYPE", "ACTUAL INSTRUMENTS DETECTED", "GET CLOSE TO THE STAGE"];
+  } else if (vibeKey === "brooklyn_club_rat" || vibeKey === "dance_floor_december" || vibeKey === "warehouse_mode") {
+    pool = ["YOU'RE ALREADY LIVING THIS ONE", "ZERO BEDTIME GUARANTEED", "PROPER SOUND SYSTEM DETECTED"];
+  } else if (vibeKey === "keep_it_weird" || vibeKey === "get_outside") {
+    pool = ["THIS FIXES THE ROOM BALANCE", "PROTECT THE WEIRD SPACES", "CURVEBALL ROOM DETECTED"];
+  }
+
+  var hash = 0;
+  if(topItem && topItem.id) {
+    for(var i=0; i<topItem.id.length; i++) {
+      hash += topItem.id.charCodeAt(i);
+    }
+  }
+  return pool[hash % pool.length];
+}
+
+function renderPickYourVibeTab() {
+  var allEvs = getAllEvents().filter(function(e){
+    if(e.ashleyOnly) return false;
+    if(e.m && e.d && isDatePast(e.m, e.d)) return false;
+    return true;
+  });
+  var stats = computeStatsFromStatuses();
+
+  var scoredVibes = ALL_VIBES_LIBRARY.map(function(v){
+    var rel = v.relevanceFn(stats, allEvs);
+    return { vibe: v, relevance: rel };
+  });
+
+  scoredVibes.sort(function(a, b){ return b.relevance - a.relevance; });
+
+  var selectedVibes = scoredVibes.slice(0, 8).map(function(x){ return x.vibe; });
+
+  var html = "";
+
+  selectedVibes.forEach(function(route){
+    var evaluatedMap = getGroupedEventsMap(getAllEvents().filter(function(e){ return !e.ashleyOnly; }));
+    var scoredItems = [];
+
+    evaluatedMap.forEach(function(node){
+      if(!node.isGroup) {
+        var e = node.item;
+        var st = state.status[e.id] || "choosing";
+        var sc = route.scoreFn(e, st);
+        scoredItems.push({ event: e, score: sc, isGroup: false });
+      } else {
+        node.items.forEach(function(item){
+          var st = state.status[item.id] || "choosing";
+          var sc = route.scoreFn(item, st);
+          scoredItems.push({ event: item, score: sc, isGroup: true, groupId: node.groupId });
+        });
+      }
+    });
+
+    scoredItems.sort(function(a, b){ return b.score - a.score; });
+
+    var picks = [];
+    var seenGroupsOrIds = {};
+    for(var i=0; i<scoredItems.length; i++) {
+      var it = scoredItems[i];
+      if(it.score <= -50) continue;
+      var identifier = it.isGroup ? ("group_" + it.groupId) : it.event.id;
+      if(!seenGroupsOrIds[identifier]) {
+        seenGroupsOrIds[identifier] = true;
+        picks.push(it);
+        if(picks.length >= 4) break;
+      }
+    }
+
+    var topItem = picks.length > 0 ? picks[0].event : null;
+    var statusMsg = getEditorialTag(route.key, topItem, stats);
+
+    html += `
+      <div class="vibe-route-card" data-vibekey="${route.key}">
+        <div>
+          <div class="vibe-route-header">
+            <h3 class="vibe-route-title">${route.title}</h3>
+            <p class="vibe-route-tagline">"${route.tagline}"</p>
+          </div>
+          <div class="vibe-route-status-msg">${statusMsg}</div>
+          <div class="vibe-route-picks">
+    `;
+
+    picks.forEach(function(p){
+      var e = p.event;
+      var st = state.status[e.id] || "choosing";
+      var isLockedLikely = (st === "locked" || st === "likely");
+      html += `
+        <div class="vibe-pick-item ${isLockedLikely ? 'is-locked-likely' : ''}">
+          <div>
+            <strong>${e.artist}</strong> <span style="color:var(--ink-muted);">(${e.m && e.d ? e.m + '/' + e.d : 'TBD'} &bull; ${e.venue})</span>
+          </div>
+          <div style="font-weight:700;">${formatPriceDisplay(e.price)}</div>
+        </div>
+      `;
+    });
+
+    html += `
+          </div>
+        </div>
+        <div class="vibe-route-action-row">
+          <a href="#panel-rest" class="vibe-route-action" data-navlink="rest" data-vibeshows="${route.key}">SEE THESE MOVES</a>
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById("vibeRoutesGrid").innerHTML = html;
+}
+
+function applyVibeRouteHighlight(vibeKey) {
+  var routeObj = ALL_VIBES_LIBRARY.find(function(v){ return v.key === vibeKey; });
+  if(!routeObj) return;
+
+  var allEvs = getAllEvents().filter(function(e){
+    if(e.ashleyOnly) return false;
+    if(e.m && e.d && isDatePast(e.m, e.d)) return false;
+    return true;
+  });
+
+  var scoredItems = [];
+  var evaluatedMap = getGroupedEventsMap(allEvs);
+
+  evaluatedMap.forEach(function(node){
+    if(!node.isGroup) {
+      var e = node.item;
+      var st = state.status[e.id] || "choosing";
+      var sc = routeObj.scoreFn(e, st);
+      scoredItems.push({ event: e, score: sc, isGroup: false });
+    } else {
+      node.items.forEach(function(item){
+        var st = state.status[item.id] || "choosing";
+        var sc = routeObj.scoreFn(item, st);
+        scoredItems.push({ event: item, score: sc, isGroup: true, groupId: node.groupId });
+      });
+    }
+  });
+
+  scoredItems.sort(function(a, b){ return b.score - a.score; });
+
+  var recommendedIds = [];
+  var seenGroupsOrIds = {};
+
+  for(var i=0; i<scoredItems.length; i++) {
+    var it = scoredItems[i];
+    if(it.score <= -50) continue;
+    var identifier = it.isGroup ? ("group_" + it.groupId) : it.event.id;
+    if(!seenGroupsOrIds[identifier]) {
+      seenGroupsOrIds[identifier] = true;
+      recommendedIds.push(it.event.id);
+      if(it.isGroup && it.event.group) {
+        state.activeGroupTab[it.event.group] = it.event.id;
+      }
+      if(recommendedIds.length >= 4) break;
+    }
+  }
+
+  state.activeVibeFilter = {
+    vibeKey: vibeKey,
+    recommendedIds: recommendedIds
+  };
+  saveState();
+}
+
+function getSeasonForMonth(m) {
+  if(m === 12 || m <= 2) return "WINTER";
+  if(m >= 3 && m <= 5) return "SPRING";
+  if(m >= 6 && m <= 8) return "SUMMER";
+  return "FALL";
+}
+
+function getPastTypeLabel(p) {
+  if(p.kind === "fest") return "FESTIVAL";
+  if(p.kind === "band") return "BAND / LIVE";
+  return "DJ";
+}
+
+function getPastRoomLabel(p) {
+  var map = {
+    "nightclub": "CLUB", "listening-room": "LISTENING ROOM", "bar": "SMALL ROOM",
+    "warehouse": "WAREHOUSE", "outdoor venue": "OUTDOOR", "festival": "FESTIVAL",
+    "rooftop": "ROOFTOP", "boat": "BOAT", "concert hall": "CONCERT HALL",
+    "theater": "THEATER", "small live room": "SMALL ROOM"
+  };
+  return map[p.venueType] || (p.venueType ? String(p.venueType).toUpperCase() : "");
+}
+
+function getPastEditorial(p, idx, allPast) {
+  if(p.note && !p.isOSL) return p.note;
+  var prev = idx > 0 ? allPast[idx - 1] : null;
+  var season = getSeasonForMonth(p.m).toLowerCase();
+  if(p.price === 0) return "Free, easy and exactly the kind of night that kept " + season + " from feeling overplanned.";
+  if(p.venueType === "rooftop") return "A rooftop night that made the venue as memorable as the booking.";
+  if(p.venueType === "outdoor venue" && p.kind === "band") return "Live music with actual room to breathe — a useful change of scale from the club calendar.";
+  if(p.venueType === "nightclub" && p.venueScale === "small") return "A proper small-room club night: less production, more proximity.";
+  if(p.venueType === "theater" || p.venueType === "concert hall") return "A full concert-room night that gave the year some big-stage weight.";
+  if(p.kind === "band" && prev && prev.kind === "dj") return "Actual instruments arrived right after a dance-floor run — perfect pacing.";
+  if(p.kind === "dj" && prev && prev.kind === "band") return "Back to the booth after live music, without repeating the exact same kind of night.";
+  if(p.kind === "dj") return "Another dance-floor chapter, but the room and timing kept it from feeling like a repeat.";
+  return "A different texture in a year that kept moving between clubs, live rooms and bigger stages.";
+}
+
+function renderYearSoFarTab(){
+  var pastTotals = computePastTotals();
+  var combinedPast = getCombinedPastEvents();
+  var selectedEvs = getAllEvents().filter(function(e){
+    if(e.m && e.d && isDatePast(e.m, e.d)) return false;
+    var st = state.status[e.id];
+    return !e.ashleyOnly && (st === "locked" || st === "likely");
+  });
+  var diversity = computeVenueDiversityScore(selectedEvs);
+
+  var statsHtml = `
+    <div class="stat-card">
+      <div class="lbl">Nights Out</div>
+      <div class="val">${pastTotals.count}</div>
+      <div class="sub">So far in 2026</div>
+    </div>
+    <div class="stat-card">
+      <div class="lbl">Rooms Visited</div>
+      <div class="val">${pastTotals.venueCount}</div>
+      <div class="sub">Clubs → parks → theaters</div>
+    </div>
+    <div class="stat-card">
+      <div class="lbl">Year's Shape</div>
+      <div class="val" style="font-size:16px;">${pastTotals.djCount >= pastTotals.bandCount ? 'DANCE-LED' : 'LIVE-LED'}</div>
+      <div class="sub">With real range</div>
+    </div>
+  `;
+  document.getElementById("pastStats").innerHTML = statsHtml;
+
+  var roomTypes = [];
+  combinedPast.forEach(function(p){
+    var label = getPastRoomLabel(p);
+    if(label && roomTypes.indexOf(label) === -1) roomTypes.push(label);
+  });
+  var roomCopy = roomTypes.slice(0, 6).join(" · ");
+  var html = `<div class="year-in-rooms"><div class="year-in-rooms-title">YEAR IN ROOMS</div><div class="year-in-rooms-copy">${roomCopy || 'A little bit of everything.'} — the rooms did almost as much work as the lineup.</div></div>`;
+
+  var seasons = ["WINTER", "SPRING", "SUMMER", "FALL"];
+  seasons.forEach(function(season){
+    var items = combinedPast.filter(function(p){ return getSeasonForMonth(p.m) === season; });
+    if(!items.length) return;
+    html += `<section class="season-block"><div class="season-heading"><span>${season} 2026</span></div>`;
+    items.forEach(function(p){
+      var idx = combinedPast.indexOf(p);
+      if(p.isOSL) {
+        html += `
+          <div class="past-diary-card" style="box-shadow:4px 4px 0 var(--hot-pink);">
+            <div class="past-diary-top">
+              <div>
+                <span class="event-date">${p.m}/${p.d}-${p.dEnd}</span>
+                <div class="event-title" style="font-size:20px;">${p.artist}</div>
+                <div class="event-venue">${p.venue}</div>
+                <div class="past-diary-meta"><span class="past-type-badge fest">FESTIVAL</span><span class="past-room-badge">${getPastRoomLabel(p)}</span></div>
+              </div>
+            </div>
+            <div class="past-editorial">${p.note || 'The scale-change weekend of the summer.'}</div>
+            <div class="osl-recap-grid">
+              <div class="osl-day-col"><div class="osl-day-title">DAY 1 (AUG 7)</div><div class="osl-chip-list">${p.day1.map(function(item){ return `<div class="osl-chip"><span>${item.name}</span>${item.partial ? '<span class="partial-tag">Partial</span>' : ''}</div>`; }).join('')}</div></div>
+              <div class="osl-day-col"><div class="osl-day-title">DAY 2 (AUG 8)</div><div class="osl-chip-list">${p.day2.map(function(item){ return `<div class="osl-chip"><span>${item.name}</span>${item.partial ? '<span class="partial-tag">Partial</span>' : ''}</div>`; }).join('')}</div></div>
+            </div>
+          </div>`;
+      } else {
+        var typeClass = p.kind === "band" ? "band" : (p.kind === "fest" ? "fest" : "dj");
+        html += `
+          <div class="past-diary-card">
+            <div class="past-diary-top">
+              <div>
+                <span class="event-date">${p.m}/${p.d}</span>
+                <div class="event-title" style="font-size:17px;">${p.artist}</div>
+                <div class="event-venue">${p.venue}</div>
+                <div class="past-diary-meta"><span class="past-type-badge ${typeClass}">${getPastTypeLabel(p)}</span>${getPastRoomLabel(p) ? `<span class="past-room-badge">${getPastRoomLabel(p)}</span>` : ''}</div>
+              </div>
+            </div>
+            <div class="past-editorial">${getPastEditorial(p, idx, combinedPast)}</div>
+          </div>`;
+      }
+    });
+    html += `</section>`;
+  });
+  document.getElementById("pastEventsList").innerHTML = html;
+}
+
+function renderMeterTrack(containerId, saturationPct, blockClass) {
+  var el = document.getElementById(containerId);
+  var filledCount = Math.round((saturationPct / 100) * 10);
+  var blocksHtml = "";
+  for(var i = 0; i < 10; i++) {
+    var isFilled = i < filledCount;
+    blocksHtml += `<div class="meter-block ${isFilled ? blockClass : ''}"></div>`;
+  }
+  el.innerHTML = blocksHtml;
+}
+
+function getDecisionSignalState(score, highBar) {
+  if(highBar) {
+    if(score >= 8) return { label:"ONLY IF SPECIAL", cls:"special" };
+    if(score >= 5) return { label:"COVERED", cls:"covered" };
+    if(score >= 3) return { label:"ROOM FOR ONE", cls:"room" };
+    return { label:"ADD", cls:"add" };
+  }
+  if(score >= 8) return { label:"COVERED", cls:"covered" };
+  if(score >= 5) return { label:"ROOM FOR ONE", cls:"room" };
+  return { label:"ADD", cls:"add" };
+}
+
+function analyzeDecisionSignals() {
+  var past = computePastTotals();
+  var assumed = getAssumedCalendarEvents();
+  var unresolved = getUnresolvedActionableEvents();
+  var djFuture = assumed.filter(function(e){ return e.kind === "dj"; });
+  var liveFuture = assumed.filter(function(e){ return e.kind === "band"; });
+  var bigFuture = assumed.filter(function(e){ return (typeof e.price === "number" && e.price >= 100) || e.specialness === "marquee" || e.commitment === "big"; });
+  var diversity = computeVenueDiversityScore(assumed);
+
+  var danceScore = past.djCount * 0.55 + djFuture.length * 1.35;
+  var liveScore = past.bandCount * 0.75 + past.festCount * 0.5 + liveFuture.length * 1.5;
+  var venueScore = diversity;
+  var bigScore = bigFuture.length * 2 + assumed.filter(function(e){ return typeof e.price === "number" && e.price >= 100; }).length;
+
+  var danceState = getDecisionSignalState(danceScore, true);
+  var liveState = getDecisionSignalState(liveScore, false);
+  var venueState = diversity >= 8 ? {label:"COVERED",cls:"covered"} : diversity >= 5 ? {label:"ROOM FOR ONE",cls:"room"} : {label:"ADD",cls:"add"};
+  var bigState = getDecisionSignalState(bigScore, true);
+
+  var kay = getAllEvents().find(function(e){ return e.id === "oct30_kaytranada"; });
+  var kayStatus = kay ? (state.status[kay.id] || "choosing") : null;
+
+  var danceAction = "→ Another DJ night should win on artist, room or price — not because the calendar needs one.";
+  if(danceScore < 5) danceAction = "→ There is still room for one genuinely good dance-floor add.";
+
+  var liveAction = liveScore >= 7 ? "→ No need to chase a band just for balance." : "→ A strong live show can still change the texture of the fall.";
+  var venueAction = diversity >= 8 ? "→ Keep the range; don't repeat the same room just because the artist is good." : "→ A genuinely new kind of room would still add value.";
+  var bigAction = "→ Another expensive night needs to feel like an anchor, not filler.";
+  if(kay && kayStatus !== "skip") bigAction = "→ Kaytranada at $200 has to earn its place as a marquee night, not just join the pile.";
+
+  return [
+    {label:"DANCE FLOOR", state:danceState, diagnosis: danceScore >= 8 ? "Electronic and club nights are already one of the defining languages of 2026." : "Dance-floor energy is present without completely owning the calendar.", action:danceAction},
+    {label:"LIVE MUSIC", state:liveState, diagnosis: liveScore >= 7 ? "Bands, festival sets and concert rooms already carry real weight." : "Live music is represented, but there is still room for one show that feels meaningfully different.", action:liveAction},
+    {label:"VENUE / EXPERIENCE", state:venueState, diagnosis: diversity >= 8 ? "Boats, parks, rooftops, clubs, theaters and bigger stages have already made the year spatially varied." : "The artist mix has range, but the remaining rooms can still broaden the experience.", action:venueAction},
+    {label:"BIG-TICKET NIGHTS", state:bigState, diagnosis: bigScore >= 5 ? "There are already several consequential or expensive nights on the board." : "The calendar still has room for one major anchor night.", action:bigAction}
+  ];
+}
+
+function renderDamageSection(){
+  var data = computeDamageAndVibe();
+  document.getElementById("vibeTitle").textContent = data.vibe.title;
+  document.getElementById("vibeDesc").textContent = data.vibe.desc;
+
+  var signals = analyzeDecisionSignals();
+  document.getElementById("decisionSignals").innerHTML = signals.map(function(sig){
+    return `<div class="decision-signal"><div class="decision-signal-head"><span class="decision-signal-label">${sig.label}</span><span class="decision-state ${sig.state.cls}">${sig.state.label}</span></div><div class="decision-signal-diagnosis">${sig.diagnosis}</div><div class="decision-signal-action">${sig.action}</div></div>`;
+  }).join("");
+
+  var onlySpecial = signals.filter(function(s){ return s.state.label === "ONLY IF SPECIAL"; }).length;
+  var roomForOne = signals.filter(function(s){ return s.state.label === "ROOM FOR ONE" || s.state.label === "ADD"; }).length;
+  var line = onlySpecial >= 2 ? "THE CALENDAR DOESN'T NEED BALANCE. IT NEEDS SELECTIVITY." : roomForOne >= 2 ? "THERE'S STILL ROOM — BUT THE NEXT YES SHOULD ADD A NEW KIND OF NIGHT." : "YOU HAVE RANGE. THE NEXT YES SHOULD BE BECAUSE IT'S GREAT.";
+  document.getElementById("finalEditorialLine").textContent = line;
+}
+
+
+/* =========================================================
+   MASTER CALENDAR VIEW
+   ========================================================= */
+var CALENDAR_MONTHS = [7, 8, 9, 10, 11]; // Aug-Dec, zero-indexed
+var calendarMonthIndex = Math.max(0, CALENDAR_MONTHS.indexOf(CURRENT_DATE.getMonth()));
+if(calendarMonthIndex === -1) calendarMonthIndex = 0;
+
+function escapeHtml(str) {
+  return String(str == null ? "" : str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function getCalendarEventsForDate(monthNum, dayNum) {
+  var evs = getAllEvents();
+  var out = [];
+  evs.forEach(function(e){
+    if(!e.m || !e.d) return;
+    var startM = e.m;
+    var startD = e.d;
+    var endD = e.dEnd || e.d;
+    if(startM === monthNum && dayNum >= startD && dayNum <= endD) {
+      out.push(e);
+    }
+  });
+  return out;
+}
+
+function renderCalendarEventChip(e, isContinuation) {
+  var st = state.status[e.id] || "choosing";
+  var label = (isContinuation ? "↳ " : "") + e.artist;
+  return `<button type="button" class="cal-event st-${st}" data-calendar-event-id="${escapeHtml(e.id)}" title="${escapeHtml(e.artist + ' · ' + e.venue + ' · ' + STATUS[st].label)}">${escapeHtml(label)}</button>`;
+}
+
+function renderCalendarTab() {
+  var container = document.getElementById("calendarView");
+  if(!container) return;
+
+  var month0 = CALENDAR_MONTHS[calendarMonthIndex];
+  var year = 2026;
+  var monthNum = month0 + 1;
+  var monthName = new Date(year, month0, 1).toLocaleString("en-US", { month: "long" });
+  var firstDow = new Date(year, month0, 1).getDay();
+  var daysInMonth = new Date(year, month0 + 1, 0).getDate();
+  var totalCells = Math.ceil((firstDow + daysInMonth) / 7) * 7;
+
+  var html = `<div class="calendar-shell">`;
+  html += `<div class="calendar-toolbar">
+    <div class="calendar-month-title">${monthName} ${year}</div>
+    <div class="calendar-month-controls">
+      <button type="button" class="calendar-arrow" data-calendar-dir="prev" ${calendarMonthIndex === 0 ? 'disabled' : ''}>← PREV</button>
+      <button type="button" class="calendar-arrow" data-calendar-dir="next" ${calendarMonthIndex === CALENDAR_MONTHS.length - 1 ? 'disabled' : ''}>NEXT →</button>
+    </div>
+  </div>`;
+
+  html += `<div class="calendar-weekdays">${["SUN","MON","TUE","WED","THU","FRI","SAT"].map(function(d){ return `<div class="calendar-weekday">${d}</div>`; }).join("")}</div>`;
+  html += `<div class="calendar-grid">`;
+
+  for(var cell = 0; cell < totalCells; cell++) {
+    var day = cell - firstDow + 1;
+    if(day < 1 || day > daysInMonth) {
+      html += `<div class="calendar-day is-empty"></div>`;
+      continue;
+    }
+
+    var isToday = CURRENT_DATE.getFullYear() === year && CURRENT_DATE.getMonth() === month0 && CURRENT_DATE.getDate() === day;
+    var dayEvents = getCalendarEventsForDate(monthNum, day);
+    html += `<div class="calendar-day ${isToday ? 'is-today' : ''}">`;
+    html += `<span class="calendar-date-num">${day}</span>`;
+    if(dayEvents.length) {
+      html += `<div class="calendar-events">`;
+      dayEvents.forEach(function(e){
+        html += renderCalendarEventChip(e, !!(e.dEnd && day > e.d));
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  }
+  html += `</div>`;
+
+  html += `<div class="calendar-legend">
+    <span class="calendar-legend-item"><span class="calendar-legend-swatch" style="background:var(--st-locked-bg)"></span>Locked</span>
+    <span class="calendar-legend-item"><span class="calendar-legend-swatch" style="background:var(--st-likely-bg)"></span>Likely</span>
+    <span class="calendar-legend-item"><span class="calendar-legend-swatch" style="background:var(--st-choosing-bg)"></span>Choosing</span>
+    <span class="calendar-legend-item"><span class="calendar-legend-swatch" style="background:var(--st-gametime-bg)"></span>Game Time</span>
+    <span class="calendar-legend-item"><span class="calendar-legend-swatch" style="background:var(--st-skip-bg)"></span>Skip</span>
+  </div>`;
+
+  var undated = getAllEvents().filter(function(e){ return !e.m || !e.d; });
+  if(undated.length) {
+    html += `<div class="calendar-tbd"><div class="calendar-tbd-title">DATE TBD / ON THE RADAR</div><div class="calendar-tbd-list">`;
+    undated.forEach(function(e){ html += renderCalendarEventChip(e, false); });
+    html += `</div></div>`;
+  }
+  html += `<p class="calendar-note">Status colors stay synced with REST OF 2026, including custom shows you add.</p>`;
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function jumpFromCalendarToEvent(eventId) {
+  var ev = getAllEvents().find(function(x){ return x.id === eventId; });
+  if(!ev) return;
+
+  if(ev.group) {
+    state.activeGroupTab[ev.group] = ev.id;
+    saveState();
+  }
+  renderRestTab();
+  switchSection("rest");
+
+  window.setTimeout(function(){
+    var target = document.querySelector(`[data-evcardid="${CSS.escape(eventId)}"]`);
+    if(!target && ev.group) {
+      target = document.querySelector(`.date-group-card[data-groupid="${CSS.escape(ev.group)}"]`);
+    }
+    if(target) {
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      target.classList.add("vibe-highlighted");
+      window.setTimeout(function(){ target.classList.remove("vibe-highlighted"); }, 1200);
+    }
+  }, 80);
+}
+
+function getYearAheadDisplayNodes() {
+  var include = ["locked","likely"];
+  var future = getAllEvents().filter(function(e){
+    if(!e.m || !e.d) return false;
+    if(isDatePast(e.m, e.d)) return false;
+    return true;
+  });
+  var grouped = getGroupedEventsMap(future);
+  var out = [];
+  grouped.forEach(function(node){
+    if(!node.isGroup) {
+      var st = state.status[node.item.id] || "choosing";
+      if(include.indexOf(st) !== -1) out.push({m:node.item.m,d:node.item.d,isGroup:false,item:node.item,status:st});
+    } else {
+      var qualifying = node.items.filter(function(e){ return include.indexOf(state.status[e.id] || "choosing") !== -1; });
+      if(!qualifying.length) return;
+      var primary = qualifying.find(function(e){ return (state.status[e.id]||"choosing") === "locked"; }) || qualifying[0];
+      out.push({m:node.m,d:node.d,isGroup:true,item:primary,status:state.status[primary.id]||"choosing"});
+    }
+  });
+  return sortNodesChronologically(out);
+}
+
+function getAheadPersonality(events) {
+  if(!events.length) return "";
+  var dj=0, live=0, fest=0, unusual=0, big=0;
+  events.forEach(function(e){
+    if(e.kind === "dj") dj++;
+    else if(e.kind === "band") live++;
+    else if(e.kind === "fest") fest++;
+    if((e.venueCharacter||[]).indexOf("unusual") !== -1 || ["boat","rooftop","festival","outdoor venue"].indexOf(e.venueType) !== -1) unusual++;
+    if(e.specialness === "marquee" || e.commitment === "big") big++;
+  });
+  if(dj >= live + 2) return "Dance floors still lead, but the rooms keep it from feeling like the same night twice.";
+  if(live >= dj + 2) return "A live-heavy finish — actual stages, actual instruments, very respectable behavior.";
+  if(unusual >= 2) return "A nicely weird finish: different rooms, different scales, no copy-paste weekends.";
+  if(big >= 2) return "You picked a few nights that feel like EVENTS, not just things on a calendar.";
+  if(fest) return "A mixed finish with clubs, live rooms and at least one proper big-swing weekend.";
+  return "A pretty balanced finish: enough range to stay interesting without turning the calendar into a second job.";
+}
+
+function renderYearAheadTab(){
+  var container = document.getElementById("yearAheadView");
+  if(!container) return;
+  var nodes = getYearAheadDisplayNodes();
+  if(!nodes.length) {
+    container.innerHTML = `<div class="ahead-hero"><span class="ahead-kicker">THE CUT</span><h2 class="ahead-hero-title">HERE'S WHAT YOU PICKED!</h2><p class="ahead-hero-copy">Nothing has made the cut yet. Head back to Rest of 2026 and start building the lineup.</p></div><div class="ahead-empty">NO NIGHTS LOCKED IN YET.</div>`;
+    return;
+  }
+  var planEvents = nodes.map(function(n){return n.item;});
+  var venues = {}; var dj=0, live=0, fest=0, free=0;
+  planEvents.forEach(function(e){
+    venues[e.venue]=true;
+    if(e.kind==="dj")dj++; else if(e.kind==="band")live++; else if(e.kind==="fest")fest++;
+    if(typeof e.price==="number" && e.price===0) free++;
+  });
+  var stats = `${nodes.length} NIGHT${nodes.length===1?'':'S'} · ${Object.keys(venues).length} ROOM${Object.keys(venues).length===1?'':'S'} · ${dj} DJ · ${live} LIVE${fest?` · ${fest} FEST`:''}`;
+  if(free) stats += ` · ${free} FREE`;
+  var html = `<div class="ahead-hero"><span class="ahead-kicker">THE CUT</span><h2 class="ahead-hero-title">HERE'S WHAT YOU PICKED!</h2><p class="ahead-hero-copy">${getAheadPersonality(planEvents)}</p><div class="ahead-hero-stats">${stats}</div></div>`;
+  var months = {};
+  nodes.forEach(function(n){ (months[n.m] || (months[n.m]=[])).push(n); });
+  Object.keys(months).map(Number).sort(function(a,b){return a-b;}).forEach(function(m){
+    var monthName = new Date(2026,m-1,1).toLocaleString("en-US",{month:"long"}).toUpperCase();
+    html += `<section class="ahead-month"><div class="ahead-month-title">${monthName}</div>`;
+    months[m].forEach(function(n){
+      var e=n.item;
+      var loc = e.location && e.location !== "Brooklyn" && e.location !== "Manhattan" && e.location !== "Queens" ? ` · ${e.location}` : "";
+      var kindLabel = e.kind === "band" ? "LIVE" : e.kind === "fest" ? "FEST" : "DJ";
+      html += `<div class="ahead-row"><div class="ahead-date">${String(e.d).padStart(2,'0')}</div><div><div class="ahead-artist-line"><div class="ahead-artist">${e.artist}</div><span class="ahead-kind ${e.kind||'dj'}">${kindLabel}</span></div><div class="ahead-venue">${e.venue}${loc}</div></div></div>`;
+    });
+    html += `</section>`;
+  });
+  container.innerHTML=html;
+}
+
+function renderAll(){
+  renderTheme();
+  renderRestTab();
+  renderCalendarTab();
+  renderYearAheadTab();
+  renderPickYourVibeTab();
+  renderYearSoFarTab();
+}
+
+/* =========================================================
+   ADD A SHOW & EDIT FUNCTIONALITY
+   ========================================================= */
+function openAddShowCard(editId) {
+  var card = document.getElementById("addShowCard");
+  var form = document.getElementById("addShowForm");
+  var heading = document.getElementById("addShowFormHeading");
+  var inlineMsg = document.getElementById("formInlineMsg");
+
+  form.reset();
+  inlineMsg.classList.remove("is-visible");
+  document.getElementById("editEventId").value = "";
+  document.getElementById("btnSaveShow").disabled = false;
+
+  if(editId) {
+    var existing = state.customEvents.find(function(x){ return x.id === editId; });
+    if(existing) {
+      heading.textContent = "EDIT SHOW";
+      document.getElementById("editEventId").value = existing.id;
+      document.getElementById("inputArtist").value = existing.artist;
+      document.getElementById("inputVenue").value = existing.venue;
+      document.getElementById("inputPrice").value = existing.price !== null ? existing.price : "";
+      document.getElementById("inputType").value = existing.kind || "dj";
+      document.getElementById("inputStatus").value = state.status[existing.id] || "choosing";
+      document.getElementById("inputCtx").value = existing.ctx || "";
+      
+      if(existing.m && existing.d) {
+        var mm = String(existing.m).padStart(2, '0');
+        var dd = String(existing.d).padStart(2, '0');
+        document.getElementById("inputDate").value = `2026-${mm}-${dd}`;
+      }
+    }
+  } else {
+    heading.textContent = "+ ADD A SHOW";
+  }
+
+  card.classList.add("is-open");
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeAddShowCard() {
+  document.getElementById("addShowCard").classList.remove("is-open");
+  document.getElementById("formInlineMsg").classList.remove("is-visible");
+  document.getElementById("btnSaveShow").disabled = false;
+}
+
+document.getElementById("btnOpenAddShow").addEventListener("click", function(){
+  openAddShowCard(null);
+});
+
+document.getElementById("btnCancelAddShow").addEventListener("click", function(){
+  closeAddShowCard();
+});
+
+document.getElementById("addShowForm").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  
+  var saveBtn = document.getElementById("btnSaveShow");
+  if(saveBtn.disabled) return;
+  saveBtn.disabled = true;
+
+  var inlineMsg = document.getElementById("formInlineMsg");
+  inlineMsg.classList.remove("is-visible");
+
+  var editId = document.getElementById("editEventId").value;
+  var artist = document.getElementById("inputArtist").value.trim();
+  var dateStr = document.getElementById("inputDate").value;
+  var venue = document.getElementById("inputVenue").value.trim();
+  var rawPrice = document.getElementById("inputPrice").value.trim();
+  var kind = document.getElementById("inputType").value;
+  var defaultStatus = document.getElementById("inputStatus").value;
+  var ctx = document.getElementById("inputCtx").value.trim();
+
+  var m = null, d = null;
+  if(dateStr) {
+    var parts = dateStr.split("-");
+    if(parts.length === 3) {
+      m = parseInt(parts[1], 10);
+      d = parseInt(parts[2], 10);
+    }
+  }
+
+  var priceVal = rawPrice;
+  if(rawPrice === "" || rawPrice.toUpperCase() === "TBD") {
+    priceVal = null;
+  } else if(rawPrice.toUpperCase() === "FREE" || rawPrice === "0") {
+    priceVal = 0;
+  } else {
+    var parsedNum = parseFloat(rawPrice.replace(/[^0-9.]/g, ''));
+    if(!isNaN(parsedNum)) priceVal = parsedNum;
+  }
+
+  var normArtist = normalizeStr(artist);
+  var normVenue = normalizeStr(venue);
+  var duplicateFound = state.customEvents.some(function(x){
+    if(editId && x.id === editId) return false;
+    return x.m === m && x.d === d && normalizeStr(x.artist) === normArtist && normalizeStr(x.venue) === normVenue;
+  });
+
+  if(duplicateFound) {
+    inlineMsg.classList.add("is-visible");
+    saveBtn.disabled = false;
+    return;
+  }
+
+  if(editId) {
+    var existingIdx = state.customEvents.findIndex(function(x){ return x.id === editId; });
+    if(existingIdx !== -1) {
+      state.customEvents[existingIdx].artist = artist;
+      state.customEvents[existingIdx].m = m;
+      state.customEvents[existingIdx].d = d;
+      state.customEvents[existingIdx].venue = venue;
+      state.customEvents[existingIdx].price = priceVal;
+      state.customEvents[existingIdx].kind = kind;
+      state.customEvents[existingIdx].ctx = ctx;
+      inferEventMetadata(state.customEvents[existingIdx]);
+      state.status[editId] = defaultStatus;
+    }
+  } else {
+    var newId = "custom_" + Date.now();
+    var newEvent = {
+      id: newId,
+      m: m, d: d,
+      artist: artist,
+      venue: venue,
+      price: priceVal,
+      kind: kind,
+      isCustom: true,
+      ctx: ctx || "User added show"
+    };
+    inferEventMetadata(newEvent);
+    state.customEvents.push(newEvent);
+    state.status[newId] = defaultStatus;
+  }
+
+  saveState();
+  closeAddShowCard();
+  renderAll();
+});
+
+/* =========================================================
+   NAVIGATION & ROUTING ENGINE
+   ========================================================= */
+function switchSection(targetKey){
+  window.scrollTo(0, 0);
+
+  document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("is-active"); });
+  var navOuter = document.getElementById("sectionNavOuter");
+
+  if(targetKey === "home") {
+    document.getElementById("panel-home").classList.add("is-active");
+    navOuter.classList.remove("is-visible");
+    document.querySelectorAll("[data-nav]").forEach(function(b){ b.setAttribute("aria-selected", "false"); });
+  } else {
+    navOuter.classList.add("is-visible");
+    document.getElementById("panel-" + targetKey).classList.add("is-active");
+    document.querySelectorAll("[data-nav]").forEach(function(b){
+      if(b.dataset.nav === targetKey) {
+        b.setAttribute("aria-selected", "true");
+      } else {
+        b.setAttribute("aria-selected", "false");
+      }
+    });
+  }
+}
+
+/* =========================================================
+   INTERACTION LISTENERS & DELEGATION
+   ========================================================= */
+document.getElementById("theme-btn").addEventListener("click", function(){
+  state.theme = (state.theme === "dark") ? "light" : "dark";
+  saveState();
+  renderTheme();
+});
+
+document.getElementById("heroTitle").addEventListener("click", function(){
+  state.activeVibeFilter = null;
+  saveState();
+  renderRestTab();
+  switchSection("home");
+});
+
+document.querySelectorAll(".nav-tile").forEach(function(tile){
+  tile.addEventListener("click", function(){
+    var target = tile.dataset.navtarget;
+    switchSection(target);
+  });
+});
+
+document.querySelectorAll("[data-nav]").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    var navKey = btn.dataset.nav;
+    switchSection(navKey);
+  });
+});
+
+document.addEventListener("click", function(ev){
+
+  var calDirBtn = ev.target.closest("[data-calendar-dir]");
+  if(calDirBtn && !calDirBtn.disabled) {
+    var dir = calDirBtn.dataset.calendarDir;
+    if(dir === "prev" && calendarMonthIndex > 0) calendarMonthIndex--;
+    if(dir === "next" && calendarMonthIndex < CALENDAR_MONTHS.length - 1) calendarMonthIndex++;
+    renderCalendarTab();
+    return;
+  }
+
+  var calEventBtn = ev.target.closest("[data-calendar-event-id]");
+  if(calEventBtn) {
+    jumpFromCalendarToEvent(calEventBtn.dataset.calendarEventId);
+    return;
+  }
+
+  var vibeShowsLink = ev.target.closest("[data-vibeshows]");
+  if(vibeShowsLink) {
+    ev.preventDefault();
+    var vibeKey = vibeShowsLink.dataset.vibeshows;
+    applyVibeRouteHighlight(vibeKey);
+    saveState();
+    renderAll();
+    switchSection("rest");
+    return;
+  }
+
+  var clearVibeBtn = ev.target.closest("#btnClearVibe");
+  if(clearVibeBtn) {
+    ev.preventDefault();
+    state.activeVibeFilter = null;
+    saveState();
+    renderRestTab();
+    return;
+  }
+
+  var navLink = ev.target.closest("[data-navlink]");
+  if(navLink) {
+    ev.preventDefault();
+    var targetKey = navLink.dataset.navlink;
+    switchSection(targetKey);
+    return;
+  }
+
+  var attBtn = ev.target.closest(".btn-att");
+  if(attBtn) {
+    var attendId = attBtn.dataset.attendId;
+    var attendVal = attBtn.dataset.attendVal;
+    state.attendance[attendId] = attendVal;
+    saveState();
+    renderAll();
+    return;
+  }
+
+  var segBtn = ev.target.closest(".seg-tab");
+  if(segBtn) {
+    var groupEl = segBtn.closest(".segmented-tabs");
+    if(groupEl) {
+      var groupId = groupEl.dataset.groupid;
+      var itemId = segBtn.dataset.tabitemid;
+      state.activeGroupTab[groupId] = itemId;
+      saveState();
+      renderAll();
+    }
+  }
+
+  if(ev.target.classList.contains("btn-edit-custom")) {
+    var editId = ev.target.dataset.id;
+    openAddShowCard(editId);
+  }
+
+  if(ev.target.classList.contains("btn-delete-custom")) {
+    var delId = ev.target.dataset.id;
+    state.customEvents = state.customEvents.filter(function(x){ return x.id !== delId; });
+    delete state.status[delId];
+    delete state.attendance[delId];
+    saveState();
+    renderAll();
+  }
+});
+
+document.getElementById("restEventsList").addEventListener("change", function(ev){
+  if(ev.target.classList.contains("status-select")) {
+    var id = ev.target.dataset.evstatus;
+    var val = ev.target.value;
+    var isGrouped = ev.target.dataset.isgrouped;
+
+    if(isGrouped && (val === "locked" || val === "likely")) {
+      var groupId = ev.target.dataset.groupid;
+      getAllEvents().filter(function(x){ return x.group === groupId && x.id !== id; }).forEach(function(other){
+        state.status[other.id] = "skip";
+      });
+    }
+
+    state.status[id] = val;
+
+    saveState();
+    renderAll();
+  }
+
+  if(ev.target.id === "rampaDateInput") {
+    state.rampaDate = ev.target.value;
+    saveState();
+    renderAll();
+  }
+});
+
+/* =========================================================
+   BOOT UP
+   ========================================================= */
+loadState();
+renderAll();
+switchSection("home");
+
+})();
+</script>
+</body>
+</html>
