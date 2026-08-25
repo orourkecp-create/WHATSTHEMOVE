@@ -1174,6 +1174,8 @@ var state = {
   channelTresSecond: { bought: false, price: null },
   rampaDate: "",
   customEvents: [],
+  eventOverrides: {}, // edits to hard-coded/master events
+  removedEventIds: [], // any show can be removed without mutating the master dataset
   activeVibeFilter: null // { vibeKey, recommendedIds: [...] }
 };
 
@@ -1204,6 +1206,8 @@ function loadState(){
       if(parsed.channelTresSecond) state.channelTresSecond = parsed.channelTresSecond;
       if(parsed.rampaDate !== undefined) state.rampaDate = parsed.rampaDate;
       if(parsed.attendance) Object.assign(state.attendance, parsed.attendance);
+      if(parsed.eventOverrides && typeof parsed.eventOverrides === "object") state.eventOverrides = parsed.eventOverrides;
+      if(Array.isArray(parsed.removedEventIds)) state.removedEventIds = parsed.removedEventIds;
       // Retire the removed Mark Ronson event from older saved versions.
       delete state.status.mark_ronson;
       delete state.attendance.mark_ronson;
@@ -1307,7 +1311,12 @@ function inferEventMetadata(e) {
    CALCULATION LOGIC & PACING ENGINE
    ========================================================= */
 function getAllEvents(){
-  var combined = INITIAL_EVENTS.concat(state.customEvents);
+  var removed = new Set(state.removedEventIds || []);
+  var master = INITIAL_EVENTS.filter(function(e){ return !removed.has(e.id); }).map(function(e){
+    return Object.assign({}, e, (state.eventOverrides && state.eventOverrides[e.id]) || {});
+  });
+  var custom = state.customEvents.filter(function(e){ return !removed.has(e.id); });
+  var combined = master.concat(custom);
   return combined.map(function(e){
     var copy = Object.assign({}, e);
     if(copy.isRampa && state.rampaDate) {
@@ -1971,13 +1980,11 @@ function renderSingleEventCard(e){
       </div>
 
       ${e.isRampa ? renderRampaControls() : ''}
-      ${e.isCustom ? `
-        <div class="custom-card-controls">
-          <button type="button" class="btn-text-action btn-edit-custom" data-id="${e.id}">Edit Show</button>
-          <span>&bull;</span>
-          <button type="button" class="btn-text-action btn-delete-custom" data-id="${e.id}">Remove</button>
-        </div>
-      ` : ''}
+      <div class="custom-card-controls">
+        <button type="button" class="btn-text-action btn-edit-custom" data-id="${e.id}">Edit Show</button>
+        <span>&bull;</span>
+        <button type="button" class="btn-text-action btn-delete-custom" data-id="${e.id}">Remove</button>
+      </div>
     </div>
   `;
 }
@@ -2069,6 +2076,11 @@ function renderGroupedEventCard(node){
             }).join('')}
           </select>
         </div>
+      </div>
+      <div class="custom-card-controls">
+        <button type="button" class="btn-text-action btn-edit-custom" data-id="${activeItem.id}">Edit Show</button>
+        <span>&bull;</span>
+        <button type="button" class="btn-text-action btn-delete-custom" data-id="${activeItem.id}">Remove</button>
       </div>
     </div>
   `;
@@ -2978,7 +2990,7 @@ function openAddShowCard(editId) {
   document.getElementById("btnSaveShow").disabled = false;
 
   if(editId) {
-    var existing = state.customEvents.find(function(x){ return x.id === editId; });
+    var existing = getAllEvents().find(function(x){ return x.id === editId; });
     if(existing) {
       heading.textContent = "EDIT SHOW";
       document.getElementById("editEventId").value = existing.id;
@@ -3057,7 +3069,7 @@ document.getElementById("addShowForm").addEventListener("submit", function(ev){
 
   var normArtist = normalizeStr(artist);
   var normVenue = normalizeStr(venue);
-  var duplicateFound = state.customEvents.some(function(x){
+  var duplicateFound = getAllEvents().some(function(x){
     if(editId && x.id === editId) return false;
     return x.m === m && x.d === d && normalizeStr(x.artist) === normArtist && normalizeStr(x.venue) === normVenue;
   });
@@ -3069,18 +3081,15 @@ document.getElementById("addShowForm").addEventListener("submit", function(ev){
   }
 
   if(editId) {
+    var edited = { artist:artist, m:m, d:d, venue:venue, price:priceVal, kind:kind, ctx:ctx };
+    inferEventMetadata(edited);
     var existingIdx = state.customEvents.findIndex(function(x){ return x.id === editId; });
     if(existingIdx !== -1) {
-      state.customEvents[existingIdx].artist = artist;
-      state.customEvents[existingIdx].m = m;
-      state.customEvents[existingIdx].d = d;
-      state.customEvents[existingIdx].venue = venue;
-      state.customEvents[existingIdx].price = priceVal;
-      state.customEvents[existingIdx].kind = kind;
-      state.customEvents[existingIdx].ctx = ctx;
-      inferEventMetadata(state.customEvents[existingIdx]);
-      state.status[editId] = defaultStatus;
+      state.customEvents[existingIdx] = Object.assign({}, state.customEvents[existingIdx], edited, {id:editId, isCustom:true});
+    } else {
+      state.eventOverrides[editId] = Object.assign({}, state.eventOverrides[editId] || {}, edited);
     }
+    state.status[editId] = defaultStatus;
   } else {
     var newId = "custom_" + Date.now();
     var newEvent = {
@@ -3234,6 +3243,8 @@ document.addEventListener("click", function(ev){
   if(ev.target.classList.contains("btn-delete-custom")) {
     var delId = ev.target.dataset.id;
     state.customEvents = state.customEvents.filter(function(x){ return x.id !== delId; });
+    delete state.eventOverrides[delId];
+    if(!state.removedEventIds.includes(delId)) state.removedEventIds.push(delId);
     delete state.status[delId];
     delete state.attendance[delId];
     saveState();
